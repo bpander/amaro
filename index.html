@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>test</title>
+    <meta name="viewport" content="initial-scale=1">
+    <title>State.js Interactive Demo</title>
     <style>
 
         .textarea {
+            box-sizing: border-box;
             width: 100%;
             height: 120px;
             font-family: monospace;
@@ -16,25 +18,45 @@
             color: #7f7;
             overflow: auto;
         }
+
+        .flex {
+            display: flex;
+            margin-left: -10px;
+        }
+
+        .flex > * {
+            box-sizing: border-box;
+            flex: none;
+            padding-left: 10px;
+            width: 50%;
+        }
+
+        .out {
+            box-sizing: border-box;
+            padding: 10px;
+            background: #eec;
+        }
     </style>
 </head>
 <body>
 
     <h1>State.js Interactive Demo</h1>
 
-    <h2>Setup</h2>
-    <pre class="pre">
-    var elements = $('[data-props]').toArray(); // Note: jQuery is not necessary, the State constructor just expects an array of elements
-    var state = new State(elements, {
-        // Defaults
-        text: '',
-        complete: false
-    });
-    state.set({ ... });
-    </pre>
+    <div class="flex">
+        <div>
+            <h2>Setup</h2>
+            <pre class="pre">
+var elements = $('[data-props]').toArray(); // Note: jQuery is not necessary, the State constructor just expects an array of elements
+var state = new State(elements, {
+    // Defaults
+    text: '',
+    complete: false
+});
+state.set({ ... });
+            </pre>
 
-    <h2>HTML</h2>
-    <textarea class="textarea" id="js-htmlInput">&lt;input
+            <h2>HTML</h2>
+            <textarea class="textarea" id="js-htmlInput">&lt;input
     type="checkbox"
     data-props="{ checked: state.complete }"
 /&gt;
@@ -43,15 +65,20 @@
     style: { textDecoration: state.complete ? 'line-through' : '' }
 }"&gt;&lt;/label&gt;</textarea>
 
-    <h2>State Object</h2>
-    <small>Note: This is intentionally one-way binding.</small>
-    <textarea class="textarea" id="js-stateInput">{
+            <h2>State Object</h2>
+            <small>Note: This is intentionally one-way binding.</small>
+
+            <textarea class="textarea" id="js-stateInput">{
     text: 'Buy milk.',
     complete: true
 }</textarea>
+        </div>
 
-    <h2>Result</h2>
-    <div id="js-output">
+        <div>
+            <h2>Result</h2>
+            <div class="out" id="js-output">
+            </div>
+        </div>
     </div>
 
     <script src="State.js"></script>

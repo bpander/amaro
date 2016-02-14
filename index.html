@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test</title>
+    <style>
+
+        .textarea {
+            width: 100%;
+            height: 120px;
+            font-family: monospace;
+        }
+
+        .pre {
+            width: 100%;
+            background: #555;
+            color: #7f7;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>State.js Interactive Demo</h1>
+
+    <h2>Setup</h2>
+    <pre class="pre">
+    var elements = $('[data-props]').toArray(); // Note: jQuery is not necessary, the State constructor just expects an array of elements
+    var state = new State(elements, {
+        // Defaults
+        text: '',
+        complete: false
+    });
+    state.set({ ... });
+    </pre>
+
+    <h2>HTML</h2>
+    <textarea class="textarea" id="js-htmlInput">&lt;input
+    type="checkbox"
+    data-props="{ checked: state.complete }"
+/&gt;
+&lt;label data-props="{
+    textContent: state.text,
+    style: { textDecoration: state.complete ? 'line-through' : '' }
+}"&gt;&lt;/label&gt;</textarea>
+
+    <h2>State Object</h2>
+    <small>Note: This is intentionally one-way binding.</small>
+    <textarea class="textarea" id="js-stateInput">{
+    text: 'Buy milk.',
+    complete: true
+}</textarea>
+
+    <h2>Result</h2>
+    <div id="js-output">
+    </div>
+
+    <script src="State.js"></script>
+    <script>
+(function () {
+    'use strict';
+
+    var htmlInput = document.getElementById('js-htmlInput');
+    var stateInput = document.getElementById('js-stateInput');
+    var output = document.getElementById('js-output');
+    var state = new State([], {
+        text: '',
+        checked: false
+    });
+
+    var handleHTMLInput = function () {
+        output.innerHTML = htmlInput.value;
+        var elements = Array.prototype.slice.call(output.querySelectorAll('[data-props]'));
+        var oldState = state.state;
+        state = new State(elements, oldState);
+        state.set();
+    };
+
+    var handleStateInput = function () {
+        var fn = new Function('return ' + stateInput.value + ';');
+        state.state = fn();
+        state.set();
+    };
+    htmlInput.addEventListener('input', handleHTMLInput);
+    stateInput.addEventListener('input', handleStateInput);
+    handleHTMLInput();
+    handleStateInput();
+
+})();
+    </script>
+</body>
+</html>

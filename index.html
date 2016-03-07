@@ -58,14 +58,14 @@ state.set({ ... });
             <h2>HTML</h2>
             <textarea class="textarea" id="js-htmlInput">&lt;input
     type="checkbox"
-    data-props="{ checked: state.complete }"
+    data-props="{ checked: model.complete }"
 /&gt;
 &lt;label data-props="{
-    textContent: state.text,
-    style: { textDecoration: state.complete ? 'line-through' : '' }
+    textContent: model.text,
+    style: { textDecoration: model.complete ? 'line-through' : '' }
 }"&gt;&lt;/label&gt;</textarea>
 
-            <h2>State Object</h2>
+            <h2>Model</h2>
             <small>Note: This is intentionally one-way binding.</small>
 
             <textarea class="textarea" id="js-stateInput">{
@@ -97,14 +97,14 @@ state.set({ ... });
     var handleHTMLInput = function () {
         output.innerHTML = htmlInput.value;
         var elements = Array.prototype.slice.call(output.querySelectorAll('[data-props]'));
-        var oldState = state.state;
-        state = new State(elements, oldState);
+        var oldModel = state.model;
+        state = new State(elements, oldModel);
         state.set();
     };
 
     var handleStateInput = function () {
         var fn = new Function('return ' + stateInput.value + ';');
-        state.state = fn();
+        state.model = fn();
         state.set();
     };
     htmlInput.addEventListener('input', handleHTMLInput);

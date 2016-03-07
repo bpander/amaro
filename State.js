@@ -13,11 +13,11 @@
     'use strict';
 
 
-    function State (elements, state) {
+    function State (elements, model) {
 
         this.elements = elements;
 
-        this.state = state;
+        this.model = model;
 
         this.map = elements.map(function (element) {
             return {
@@ -30,7 +30,7 @@
 
     State.DATA_ATTRIBUTE = 'props';
 
-    State.VAR_NAME = 'state';
+    State.VAR_NAME = 'model';
 
 
     State._compileObjectTemplate = function (templateString) {
@@ -59,17 +59,17 @@
 
 
     /**
-     * Performs a shallow merge on the `state` data.
+     * Performs a shallow merge on the `model` data.
      */
-    State.prototype.set = function (state) {
+    State.prototype.set = function (model) {
         var grouping;
         var props;
         var i;
         var l;
-        Object.assign(this.state, state);
+        Object.assign(this.model, model);
         for (i = 0, l = this.map.length; i < l; i++) {
             grouping = this.map[i];
-            props = grouping.template(this.state);
+            props = grouping.template(this.model);
             State._merge(grouping.element, props);
         }
     };

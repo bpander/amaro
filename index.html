@@ -1,118 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="initial-scale=1">
-    <title>State.js Interactive Demo</title>
-    <style>
-
-        .textarea {
-            box-sizing: border-box;
-            width: 100%;
-            height: 120px;
-            font-family: monospace;
-        }
-
-        .pre {
-            width: 100%;
-            background: #555;
-            color: #7f7;
-            overflow: auto;
-        }
-
-        .flex {
-            display: flex;
-            margin-left: -10px;
-        }
-
-        .flex > * {
-            box-sizing: border-box;
-            flex: none;
-            padding-left: 10px;
-            width: 50%;
-        }
-
-        .out {
-            box-sizing: border-box;
-            padding: 10px;
-            background: #eec;
-        }
-    </style>
+    <title>State.js</title>
 </head>
 <body>
 
-    <h1>State.js Interactive Demo</h1>
-
-    <div class="flex">
-        <div>
-            <h2>Setup</h2>
-            <pre class="pre">
-var elements = $('[data-props]').toArray(); // Note: jQuery is not necessary, the State constructor just expects an array of elements
-var state = new State(elements, {
-    // Defaults
-    text: '',
-    complete: false
-});
-state.set({ ... });
-            </pre>
-
-            <h2>HTML</h2>
-            <textarea class="textarea" id="js-htmlInput">&lt;input
-    type="checkbox"
-    data-props="{ checked: model.complete }"
-/&gt;
-&lt;label data-props="{
-    textContent: model.text,
-    style: { textDecoration: model.complete ? 'line-through' : '' }
-}"&gt;&lt;/label&gt;</textarea>
-
-            <h2>Model</h2>
-            <small>Note: This is intentionally one-way binding.</small>
-
-            <textarea class="textarea" id="js-stateInput">{
-    text: 'Buy milk.',
-    complete: true
-}</textarea>
+    <div data-component="TodosApp" id="js-app">
+    <p>always shown (before)</p>
+        <div data-if="props.show">
+            show is true
         </div>
-
-        <div>
-            <h2>Result</h2>
-            <div class="out" id="js-output">
-            </div>
-        </div>
+        <p>always shown (after)</p>
     </div>
 
     <script src="State.js"></script>
+    <script src="components.js"></script>
     <script>
-(function () {
-    'use strict';
+        (function () {
+            'use strict';
 
-    var htmlInput = document.getElementById('js-htmlInput');
-    var stateInput = document.getElementById('js-stateInput');
-    var output = document.getElementById('js-output');
-    var state = new State([], {
-        text: '',
-        checked: false
-    });
+            var State = window.State;
+            var element = document.getElementById('js-app');
+            var TodosApp = State.componentMap.TodosApp;
+            window.app = State.mount(element, TodosApp, { show: false });
 
-    var handleHTMLInput = function () {
-        output.innerHTML = htmlInput.value;
-        var elements = Array.prototype.slice.call(output.querySelectorAll('[data-props]'));
-        var oldModel = state.model;
-        state = new State(elements, oldModel);
-        state.set();
-    };
-
-    var handleStateInput = function () {
-        var fn = new Function('return ' + stateInput.value + ';');
-        state.model = fn();
-        state.set();
-    };
-    htmlInput.addEventListener('input', handleHTMLInput);
-    stateInput.addEventListener('input', handleStateInput);
-    handleHTMLInput();
-    handleStateInput();
-
-})();
+        })();
     </script>
 </body>
 </html>

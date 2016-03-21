@@ -12,6 +12,60 @@
 }(this, function () {
     'use strict';
 
+    var State = {};
+
+    State.mount = function (element, Component, initialProps) {
+        var component = new Component(element, initialProps);
+        var i;
+        var l;
+        var ifElement;
+        var ifElements = element.querySelectorAll('[data-if]');
+        var states = [];
+        var state;
+        for (i = 0, l = ifElements.length; i < l; i++) {
+            ifElement = ifElements[i];
+            state = new State.IfControl(
+                ifElement,
+                (new Function('props', 'return ' + ifElement.dataset.if + ';')).bind(this)
+            );
+            component.controls.push(state);
+        }
+        return component;
+    };
+
+    State.IfControl = function IfControl (element, condition) {
+
+        this.element = element;
+
+        this.parentNode = element.parentNode;
+
+        this.condition = condition;
+
+        this.nextSiblings = State._getNextSiblings(element);
+
+    };
+
+    State.IfControl.prototype.exec = function (props) {
+        var isTruthy = this.condition(props) == true;
+        if (isTruthy) {
+            this.parentNode.insertBefore(this.element, this.nextSiblings[0]);
+        } else {
+            if (this.element.parentNode === this.parentNode) {
+                this.parentNode.removeChild(this.element);
+            }
+        }
+    };
+
+
+    State._getNextSiblings = function (element) {
+        var sibling = element;
+        var nextSiblings = [];
+        while ((sibling = sibling.nextSibling) !== null) {
+            nextSiblings.push(sibling);
+        }
+        return nextSiblings;
+    };
+
 
     function State (elements, model) {
 
@@ -58,10 +112,21 @@
     };
 
 
+    State.Component = function Component (element, props) {
+
+        this.element = element;
+
+        this.props = props;
+
+        this.controls = [];
+
+    }
+
+
     /**
      * Performs a shallow merge on the `model` data.
      */
-    State.prototype.set = function (model) {
+    State.Component.prototype.set = function (model) {
         var grouping;
         var props;
         var i;

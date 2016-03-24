@@ -1,0 +1,21 @@
+{
+  "name": "State.js",
+  "main": "State.js",
+  "homepage": "https://github.com/bpander/State.js",
+  "authors": [
+    "Brad Anderson <brad.anderson87@gmail.com>"
+  ],
+  "description": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "requirejs": "2.2.0"
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ifs test</title>
+</head>
+<body>
+
+    <ul id="js-app">
+        <li data-if="state.foo">
+            foo
+            <ul>
+                <li data-if="state.baz">foo/baz</li>
+            </ul>
+        </li>
+        <li data-if="state.bar">bar</li>
+    </ul>
+
+    <script src="../../bower_components/requirejs/require.js"></script>
+    <script>
+        require([
+            '../../src/Lib',
+            '../../src/Component'
+        ], function (
+            Lib,
+            Component
+        ) {
+
+            var element = document.getElementById('js-app');
+            window.app = Lib.mount(element, Component, {
+                foo: true,
+                bar: true,
+                baz: true
+            });
+        });
+    </script>
+</body>
+</html>

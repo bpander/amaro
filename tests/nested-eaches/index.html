@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Component Test</title>
+</head>
+<body>
+
+    <div id="js-app">
+        <ul>
+            <li data-each="state.todos as todo">
+                <ul>
+                    <li data-each="todo.actions as action">
+                        <span data-out="{ textContent: action.id === todo.id }"></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Components test</title>
+</head>
+<body>
+
+    <ul id="js-app">
+        <li data-if="state.foo" data-component="TodoComponent">
+            TodoComponent
+            <ul>
+                <li data-if="state.baz">foo/baz</li>
+            </ul>
+        </li>
+        <li data-if="state.bar">
+            Bar
+        </li>
+    </ul>
+
+    <script src="../../bower_components/requirejs/require.js"></script>
+    <script>
+        require([
+            '../../src/Lib',
+            '../../src/Component',
+            './TodoComponent'
+        ], function (
+            Lib,
+            Component,
+            TodoComponent
+        ) {
+
+            var element = document.getElementById('js-app');
+
+            // TODO: Think of a better way to do this
+            Lib.componentMap['TodoComponent'] = TodoComponent;
+
+            window.app = Lib.mount(element, Component, {
+                foo: true,
+                bar: true,
+                baz: true
+            });
+        });
+    </script>
+</body>
+</html>

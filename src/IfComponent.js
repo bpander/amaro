@@ -4,8 +4,8 @@ define(function (require) {
     var Component = require('./Component');
 
 
-    function IfComponent (element, initialState) {
-        Component.call(this, element, initialState);
+    function IfComponent (element) {
+        Component.call(this, element);
 
         this.parentNode = element.parentNode;
 

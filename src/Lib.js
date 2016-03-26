@@ -2,6 +2,7 @@ define(function (require) {
     'use strict';
 
     var IfComponent = require('./IfComponent');
+    var EachComponent = require('./EachComponent');
 
 
     var Lib = {};
@@ -11,7 +12,7 @@ define(function (require) {
 
 
     Lib.mount = function (element, Component, initialState) {
-        var rootComponent = new Component(element, initialState);
+        var rootComponent = new Component(element);
         var stack = [];
         var addToTree = function (component) {
             var element = component.element;
@@ -27,10 +28,15 @@ define(function (require) {
             }
             rootComponent.childComponents.push(component);
         };
-        var elements = element.querySelectorAll('[data-if], [data-component]');
+        var elements = element.querySelectorAll('[data-out], [data-if], [data-component], [data-each]');
         Array.prototype.forEach.call(elements, function (element, i) {
+            var outExpr = element.dataset.out;
             var ifExpr = element.dataset.if;
             var componentExpr = element.dataset.component;
+            var eachExpr = element.dataset.each;
+            if (outExpr) {
+                // addToTree(new Output(element, Compiler.compile(outExpr)));
+            }
             if (ifExpr) {
                 // TODO: Maybe pass in ifExpr into constructor to eliminate duplicate retrieval?
                 addToTree(new IfComponent(element));
@@ -40,11 +46,20 @@ define(function (require) {
                 var Component = Lib.componentMap[componentExpr];
                 addToTree(new Component(element));
             }
+            if (eachExpr) {
+                addToTree(new EachComponent(element));
+            }
         });
 
-        rootComponent.setState();
+        rootComponent.setState(initialState);
 
         return rootComponent;
+    };
+
+
+    Lib.compileExpression = function (expression) {
+        // comma-separated argument definition seems to be a little faster than the `new Function(arg1, arg2, body)` way
+        return new Function('state, loop', 'return ' + expression + ';');
     };
 
 

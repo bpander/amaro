@@ -5,17 +5,11 @@
 </head>
 <body>
 
-    <ul id="js-app">
-        <li data-if="state.foo" data-component="TodoComponent">
-            TodoComponent
-            <ul>
-                <li data-if="state.baz">foo/baz</li>
-            </ul>
-        </li>
-        <li data-if="state.bar">
-            Bar
-        </li>
-    </ul>
+    <div id="js-app">
+        <div data-component="TodoComponent" data-state="{ foo: state.one }">
+            <span data-out="{ textContent: state.foo }"></span>
+        </div>
+    </div>
 
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
@@ -35,9 +29,9 @@
             Lib.componentMap['TodoComponent'] = TodoComponent;
 
             window.app = Lib.mount(element, Component, {
-                foo: true,
-                bar: true,
-                baz: true
+                one:    'uno',
+                two:    'due',
+                three:  'tre'
             });
         });
     </script>

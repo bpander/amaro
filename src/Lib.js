@@ -3,6 +3,7 @@ define(function (require) {
 
     var IfComponent = require('./IfComponent');
     var EachComponent = require('./EachComponent');
+    var Output = require('./Output');
 
 
     var Lib = {};
@@ -22,7 +23,12 @@ define(function (require) {
             while (--i >= 0) {
                 counterComponent = stack[i];
                 if (counterComponent.element.contains(element) || counterComponent.element === element) {
-                    counterComponent.childComponents.push(component);
+                    // TODO: This seems a little messy, clean it up later. `addToTree` in general should probably be refactored.
+                    if (component instanceof Output) {
+                        counterComponent.outputs.push(component);
+                    } else {
+                        counterComponent.childComponents.push(component);
+                    }
                     return;
                 }
             }
@@ -34,17 +40,21 @@ define(function (require) {
             var ifExpr = element.dataset.if;
             var componentExpr = element.dataset.component;
             var eachExpr = element.dataset.each;
+            var compiled;
+
             if (outExpr) {
-                // addToTree(new Output(element, Compiler.compile(outExpr)));
+                compiled = Lib.compileExpression(outExpr);
+                addToTree(new Output(element, compiled));
             }
             if (ifExpr) {
-                // TODO: Maybe pass in ifExpr into constructor to eliminate duplicate retrieval?
-                addToTree(new IfComponent(element));
+                compiled = Lib.compileExpression(ifExpr);
+                addToTree(new IfComponent(element, compiled));
             }
             if (componentExpr) {
                 // TODO: Implement data attribute that transfers state to child components
                 var Component = Lib.componentMap[componentExpr];
-                addToTree(new Component(element));
+                compiled = Lib.compileExpression(element.dataset.state);
+                addToTree(new Component(element, compiled));
             }
             if (eachExpr) {
                 addToTree(new EachComponent(element));

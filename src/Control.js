@@ -37,7 +37,12 @@ define(function (require) {
         var prop;
         for (prop in instance) {
             if (instance.hasOwnProperty(prop)) {
-                instance[prop] = this[prop];
+                // TODO: There needs to be a better way of knowing if a property should be a clone or a reference
+                if (prop === 'iterations') {
+                    instance.iterations = {};
+                } else {
+                    instance[prop] = this[prop];
+                }
             }
         }
         instance.element = element;

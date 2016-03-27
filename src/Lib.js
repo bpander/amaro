@@ -32,7 +32,7 @@ define(function (require) {
             }
             rootComponent.children.push(control);
         };
-        var elements = element.querySelectorAll('[data-out], [data-if], [data-component], [data-each]');
+        var elements = element.querySelectorAll('[data-if], [data-out], [data-component], [data-each]');
         Array.prototype.forEach.call(elements, function (element, i) {
             var outExpr = element.dataset.out;
             var ifExpr = element.dataset.if;
@@ -40,13 +40,13 @@ define(function (require) {
             var eachExpr = element.dataset.each;
             var compiled;
 
-            if (outExpr !== undefined) {
-                compiled = Lib.compileExpression(outExpr);
-                addToTree(new OutputControl(element, compiled));
-            }
             if (ifExpr !== undefined) {
                 compiled = Lib.compileExpression(ifExpr);
                 addToTree(new IfControl(element, compiled));
+            }
+            if (outExpr !== undefined) {
+                compiled = Lib.compileExpression(outExpr);
+                addToTree(new OutputControl(element, compiled));
             }
             if (componentExpr !== undefined) {
                 var Component = Lib.componentMap[componentExpr];

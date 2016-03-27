@@ -26,10 +26,11 @@ define(function (require) {
         // TODO: forEach probably not the best for performance, try regular loop?
         Object.assign(this.state, state);
         this.outputs.forEach(function (o) {
-            o.evaluate(this.state);
+            o.evaluate(this.state, loop);
         }, this);
         this.childComponents.forEach(function (c) {
-            c.setState(this.state);
+            // FIXME: c.expression() should only happen on components
+            c.setState(c.expression(this.state, loop));
         }, this);
     };
 

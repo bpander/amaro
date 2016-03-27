@@ -40,21 +40,23 @@ define(function (require) {
             var eachExpr = element.dataset.each;
             var compiled;
 
-            if (outExpr) {
+            if (outExpr !== undefined) {
                 compiled = Lib.compileExpression(outExpr);
                 addToTree(new OutputControl(element, compiled));
             }
-            if (ifExpr) {
+            if (ifExpr !== undefined) {
                 compiled = Lib.compileExpression(ifExpr);
                 addToTree(new IfControl(element, compiled));
             }
-            if (componentExpr) {
+            if (componentExpr !== undefined) {
                 var Component = Lib.componentMap[componentExpr];
                 compiled = Lib.compileExpression(element.dataset.state);
                 addToTree(new Component(element, compiled));
             }
-            if (eachExpr) {
-                addToTree(new EachControl(element));
+            if (eachExpr !== undefined) {
+                var keyExpression = Lib.compileExpression(element.dataset.key);
+                compiled = Lib.compileExpression(eachExpr);
+                addToTree(new EachControl(element, compiled, keyExpression));
             }
         });
 

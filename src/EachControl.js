@@ -4,8 +4,10 @@ define(function (require) {
     var Control = require('./Control');
 
 
-    function EachControl (element) {
-        Control.call(this, element);
+    function EachControl (element, expression, keyExpression) {
+        Control.call(this, element, expression);
+
+        this.keyExpression = keyExpression;
 
         this.iterations = {};
 
@@ -15,7 +17,18 @@ define(function (require) {
 
 
     EachControl.prototype.acceptState = function (state, loop) {
-
+        // TODO: This should also be able to iterate over objects
+        var arr = this.expression(state, loop);
+        loop = {
+            key: null,
+            val: null,
+            outer: loop
+        };
+        arr.forEach(function (item, i) {
+            loop.key = i;
+            loop.val = item;
+            console.log(this.keyExpression(state, loop));
+        }, this);
     };
 
 

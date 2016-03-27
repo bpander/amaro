@@ -14,7 +14,11 @@ define(function (require) {
 
 
     Control.prototype.acceptState = function (state, loop) {
-
+        var i;
+        var l;
+        for (i = 0, l = this.children.length; i < l; i++) {
+            this.children[i].acceptState(state, loop);
+        }
     };
 
 

@@ -2,6 +2,7 @@ define(function (require) {
     'use strict';
 
     var Control = require('./Control');
+    var IterationControl = require('./IterationControl');
 
 
     function EachControl (element, expression, keyExpression) {
@@ -27,8 +28,25 @@ define(function (require) {
         arr.forEach(function (item, i) {
             loop.key = i;
             loop.val = item;
-            console.log(this.keyExpression(state, loop));
+            var key = this.keyExpression(state, loop);
+            var iteration = this.iterations[key];
+            if (iteration === undefined) {
+                iteration = this.createIteration();
+                this.iterations[key] = iteration;
+            }
         }, this);
+    };
+
+
+    EachControl.prototype.createIteration = function () {
+        var element = this.element.cloneNode(true);
+        var iteration = new IterationControl(element);
+        // TODO: Find a way to make this recursive so nested children get cloned on
+        iteration.children = this.children.map(function (c) {
+            var selector = '[data-control-' + this.id + '-' + c.id + ']';
+            return c.cloneOn(document.querySelector(selector));
+        }, this);
+        return iteration;
     };
 
 

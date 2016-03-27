@@ -27,6 +27,9 @@ define(function (require) {
                 otherControl = stack[i];
                 if (otherControl.element.contains(element) || otherControl.element === element) {
                     otherControl.children.push(control);
+                    if (otherControl.constructor === EachControl) {
+                        control.moldify(otherControl.id);
+                    }
                     return;
                 }
             }

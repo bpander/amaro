@@ -11,5 +11,23 @@ define(function (require) {
     IterationControl.prototype.constructor = IterationControl;
 
 
+    IterationControl.from = function (eachControl) {
+        var element = eachControl.element.cloneNode(true);
+        var iteration = new IterationControl(element);
+        IterationControl.copyChildren(iteration, eachControl);
+        return iteration;
+    };
+
+
+    IterationControl.copyChildren = function (target, template) {
+        target.children = template.children.map(function (c) {
+            var selector = '[data-control-' + template.id + '-' + c.id + ']';
+            var clone = c.cloneOn(target.element.querySelector(selector));
+            IterationControl.copyChildren(clone, c);
+            return clone;
+        });
+    };
+
+
     return IterationControl;
 });

@@ -31,22 +31,14 @@ define(function (require) {
             var key = this.keyExpression(state, loop);
             var iteration = this.iterations[key];
             if (iteration === undefined) {
-                iteration = this.createIteration();
+                iteration = IterationControl.from(this);
                 this.iterations[key] = iteration;
             }
+            iteration.acceptState(state, loop);
+            Array.prototype.forEach.call(iteration.element.children, function (node) {
+                this.element.appendChild(node);
+            }, this);
         }, this);
-    };
-
-
-    EachControl.prototype.createIteration = function () {
-        var element = this.element.cloneNode(true);
-        var iteration = new IterationControl(element);
-        // TODO: Find a way to make this recursive so nested children get cloned on
-        iteration.children = this.children.map(function (c) {
-            var selector = '[data-control-' + this.id + '-' + c.id + ']';
-            return c.cloneOn(document.querySelector(selector));
-        }, this);
-        return iteration;
     };
 
 

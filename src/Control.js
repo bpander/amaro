@@ -32,7 +32,16 @@ define(function (require) {
 
 
     Control.prototype.cloneOn = function (element) {
-        console.log(element);
+        var Constructor = this.constructor;
+        var instance = new Constructor();
+        var prop;
+        for (prop in instance) {
+            if (instance.hasOwnProperty(prop)) {
+                instance[prop] = this[prop];
+            }
+        }
+        instance.element = element;
+        return instance;
     };
 
 

@@ -32,8 +32,8 @@ define(function (require) {
     };
 
 
-    OutputControl.prototype.acceptState = function (state) {
-        var props = this.expression(state);
+    OutputControl.prototype.acceptState = function (state, loop) {
+        var props = this.expression(state, loop);
         OutputControl.merge(this.element, props);
     };
 

@@ -6,8 +6,19 @@
 <body>
 
     <div id="js-app">
-        <div data-component="TodoComponent" data-state="{ foo: state.one }">
-            <span data-out="{ textContent: state.foo }"></span>
+        <div data-component="TodoComponent" data-state="{
+            complete: state.bool,
+            text: state.str
+        }">
+            <input type="checkbox" data-out="{ checked: state.complete }" />
+            <span data-out="{ textContent: state.text }"></span>
+        </div>
+        <div data-component="TodoComponent" data-state="{
+            complete: state.bool,
+            text: state.str
+        }">
+            <div data-if="state.complete">googa mooga</div>
+            <div data-if="state.complete">googa mooga</div>
         </div>
     </div>
 
@@ -29,9 +40,8 @@
             Lib.componentMap['TodoComponent'] = TodoComponent;
 
             window.app = Lib.mount(element, Component, {
-                one:    'uno',
-                two:    'due',
-                three:  'tre'
+                bool: true,
+                str: 'buy milk'
             });
         });
     </script>

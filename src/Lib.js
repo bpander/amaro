@@ -1,9 +1,9 @@
 define(function (require) {
     'use strict';
 
-    var IfComponent = require('./IfComponent');
-    var EachComponent = require('./EachComponent');
-    var Output = require('./Output');
+    var IfControl = require('./IfControl');
+    var EachControl = require('./EachControl');
+    var OutputControl = require('./OutputControl');
 
 
     var Lib = {};
@@ -15,24 +15,22 @@ define(function (require) {
     Lib.mount = function (element, Component, initialState) {
         var rootComponent = new Component(element);
         var stack = [];
-        var addToTree = function (component) {
-            var element = component.element;
-            var counterComponent;
+        // TODO: `addToTree` should probably be refactored.
+        var addToTree = function (control) {
+            var element = control.element;
+            var otherControl;
             var i = stack.length;
-            stack.push(component);
+            if (control.constructor !== OutputControl) {
+                stack.push(control);
+            }
             while (--i >= 0) {
-                counterComponent = stack[i];
-                if (counterComponent.element.contains(element) || counterComponent.element === element) {
-                    // TODO: This seems a little messy, clean it up later. `addToTree` in general should probably be refactored.
-                    if (component instanceof Output) {
-                        counterComponent.outputs.push(component);
-                    } else {
-                        counterComponent.childComponents.push(component);
-                    }
+                otherControl = stack[i];
+                if (otherControl.element.contains(element) || otherControl.element === element) {
+                    otherControl.children.push(control);
                     return;
                 }
             }
-            rootComponent.childComponents.push(component);
+            rootComponent.children.push(control);
         };
         var elements = element.querySelectorAll('[data-out], [data-if], [data-component], [data-each]');
         Array.prototype.forEach.call(elements, function (element, i) {
@@ -44,20 +42,19 @@ define(function (require) {
 
             if (outExpr) {
                 compiled = Lib.compileExpression(outExpr);
-                addToTree(new Output(element, compiled));
+                addToTree(new OutputControl(element, compiled));
             }
             if (ifExpr) {
                 compiled = Lib.compileExpression(ifExpr);
-                addToTree(new IfComponent(element, compiled));
+                addToTree(new IfControl(element, compiled));
             }
             if (componentExpr) {
-                // TODO: Implement data attribute that transfers state to child components
                 var Component = Lib.componentMap[componentExpr];
                 compiled = Lib.compileExpression(element.dataset.state);
                 addToTree(new Component(element, compiled));
             }
             if (eachExpr) {
-                addToTree(new EachComponent(element));
+                addToTree(new EachControl(element));
             }
         });
 

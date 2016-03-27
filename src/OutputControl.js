@@ -1,17 +1,18 @@
 define(function (require) {
     'use strict';
 
+    var Control = require('./Control');
 
-    function Output (element, expression) {
 
-        this.element = element;
-
-        this.expression = expression;
+    function OutputControl (element, expression) {
+        Control.call(this, element, expression);
 
     }
+    OutputControl.prototype = Object.create(Control.prototype);
+    OutputControl.prototype.constructor = OutputControl;
 
 
-    Output.merge = function (target, props) {
+    OutputControl.merge = function (target, props) {
         var prop;
         var oldVal;
         var newVal;
@@ -19,7 +20,7 @@ define(function (require) {
             if (props.hasOwnProperty(prop)) {
                 newVal = props[prop];
                 if (newVal instanceof Object) {
-                    Output.merge(target[prop], newVal);
+                    OutputControl.merge(target[prop], newVal);
                     continue;
                 }
                 oldVal = target[prop];
@@ -31,11 +32,11 @@ define(function (require) {
     };
 
 
-    Output.prototype.evaluate = function (state) {
+    OutputControl.prototype.acceptState = function (state) {
         var props = this.expression(state);
-        Output.merge(this.element, props);
+        OutputControl.merge(this.element, props);
     };
 
 
-    return Output;
+    return OutputControl;
 });

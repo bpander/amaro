@@ -10,6 +10,8 @@ define(function (require) {
 
         this.keyExpression = keyExpression;
 
+        this.template = document.createElement('template');
+
         this.iterations = {};
 
     }

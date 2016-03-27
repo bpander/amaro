@@ -12,7 +12,7 @@ define(function (require) {
 
 
     IterationControl.from = function (eachControl) {
-        var element = eachControl.element.cloneNode(true);
+        var element = eachControl.template.cloneNode(true);
         var iteration = new IterationControl(element);
         IterationControl.copyChildren(iteration, eachControl);
         return iteration;

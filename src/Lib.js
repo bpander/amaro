@@ -15,6 +15,7 @@ define(function (require) {
     Lib.mount = function (element, Component, initialState) {
         var rootComponent = new Component(element);
         var stack = [];
+        var eachControls = [];
         // TODO: `addToTree` should probably be refactored.
         var addToTree = function (control) {
             var element = control.element;
@@ -55,10 +56,19 @@ define(function (require) {
                 addToTree(new Component(element, compiled));
             }
             if (eachExpr !== undefined) {
+                var control;
                 var keyExpression = Lib.compileExpression(element.dataset.key);
                 compiled = Lib.compileExpression(eachExpr);
-                addToTree(new EachControl(element, compiled, keyExpression));
+                control = new EachControl(element, compiled, keyExpression);
+                addToTree(control);
+                eachControls.push(control);
             }
+        });
+
+        eachControls.forEach(function (control) {
+            Array.prototype.forEach.call(control.element.children, function (node) {
+                control.template.appendChild(node);
+            });
         });
 
         rootComponent.setState(initialState);

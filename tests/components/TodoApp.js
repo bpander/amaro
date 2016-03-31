@@ -35,5 +35,12 @@ define(function (require) {
     };
 
 
+    TodoApp.prototype.setState = function () {
+        var start = Date.now();
+        Component.prototype.setState.apply(this, arguments);
+        console.log('setState took', Date.now() - start, 'ms');
+    };
+
+
     return TodoApp;
 });

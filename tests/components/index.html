@@ -24,8 +24,24 @@
             </li>
         </ul>
 
-        <div data-if="state.todos.length === 0">
-            No todos
+        <hr />
+
+        <div data-component="TodoComponent" data-state="{ todo: state.todos[state.todos.length - 1] }">
+
+            <div data-if="state.todo !== undefined">
+                <h2>Detail of the Last Todo</h2>
+                <i>This is just to show how flexible components are when you don't put your markup in the the javascript</i>
+                <h3 data-out="{ textContent: state.todo.text }"></h3>
+                <dl>
+                    <dt>Id:</dt>
+                    <dd data-out="{ textContent: state.todo.id }"></dd>
+                    <dt>Complete:</dt>
+                    <dd data-out="{ textContent: state.todo.complete ? 'Yes' : 'No' }"></dd>
+                </dl>
+            </div>
+
+            <div data-if="state.todo === undefined">No todos</div>
+
         </div>
 
     </div>

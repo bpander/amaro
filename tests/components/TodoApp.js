@@ -30,6 +30,7 @@ define(function (require) {
         },
         toggleTodo: function (todo) {
             todo.complete = !todo.complete;
+            this.setState();
         }
     };
 

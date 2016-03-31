@@ -6,20 +6,28 @@
 <body>
 
     <div id="js-app">
-        <div data-component="TodoComponent" data-state="{
-            complete: state.bool,
-            text: state.str
-        }">
-            <input type="checkbox" data-out="{ checked: state.complete }" />
-            <span data-out="{ textContent: state.text }"></span>
+
+        <input data-out="{ onkeydown: state.onkeydown.bind(this) }" />
+
+        <ul data-each="state.todos" data-key="loop.val.id">
+            <li data-component="TodoComponent" data-state="{
+                todo: loop.val,
+                onRemoveClick: state.removeTodo.bind(this, loop.val),
+                onCheckboxChange: state.toggleTodo.bind(this, loop.val)
+            }">
+                <input type="checkbox" data-out="{
+                    checked: state.todo.complete,
+                    onchange: state.onCheckboxChange
+                }" />
+                <span data-out="{ textContent: state.todo.text }"></span>
+                <button data-out="{ onclick: state.onRemoveClick }">&times;</button>
+            </li>
+        </ul>
+
+        <div data-if="state.todos.length === 0">
+            No todos
         </div>
-        <div data-component="TodoComponent" data-state="{
-            complete: state.bool,
-            text: state.str
-        }">
-            <div data-if="state.complete">googa mooga</div>
-            <div data-if="state.complete">googa mooga</div>
-        </div>
+
     </div>
 
     <script src="../../bower_components/requirejs/require.js"></script>
@@ -27,21 +35,25 @@
         require([
             '../../src/Lib',
             '../../src/Component',
+            './TodoApp',
             './TodoComponent'
         ], function (
             Lib,
             Component,
+            TodoApp,
             TodoComponent
         ) {
 
             var element = document.getElementById('js-app');
 
-            // TODO: Think of a better way to do this
+            Lib.componentMap['TodoApp'] = TodoApp;
             Lib.componentMap['TodoComponent'] = TodoComponent;
 
-            window.app = Lib.mount(element, Component, {
-                bool: true,
-                str: 'buy milk'
+            window.app = Lib.mount(element, TodoApp, {
+                todos: [
+                    { id: '1', text: 'Buy milk', complete: false },
+                    { id: '2', text: 'Make bed', complete: true }
+                ]
             });
         });
     </script>

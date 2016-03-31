@@ -19,7 +19,7 @@ define(function (require) {
         for (prop in props) {
             if (props.hasOwnProperty(prop)) {
                 newVal = props[prop];
-                if (newVal instanceof Object) {
+                if (typeof newVal === 'object') {
                     OutputControl.merge(target[prop], newVal);
                     continue;
                 }

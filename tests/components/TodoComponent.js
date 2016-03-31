@@ -4,11 +4,18 @@ define(function (require) {
     var Component = require('../../src/Component');
 
 
-    function TodoComponent (element, initialState) {
-        Component.call(this, element, initialState);
+    function TodoComponent (element, expression) {
+        Component.call(this, element, expression);
     }
     TodoComponent.prototype = Object.create(Component.prototype);
     TodoComponent.prototype.constructor = TodoComponent;
+
+
+    TodoComponent.defaults = {
+        todo: null,
+        onRemoveClick: Function.prototype,
+        onCheckboxChange: Function.prototype
+    };
 
 
     return TodoComponent;

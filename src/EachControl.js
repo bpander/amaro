@@ -27,9 +27,11 @@ define(function (require) {
             val: null,
             outer: loop
         };
+        var docFrag = document.createDocumentFragment();
         arr.forEach(function (item, i) {
             loop.key = i;
             loop.val = item;
+            // TODO: The default should just key off of the index
             var key = this.keyExpression(state, loop);
             var iteration = this.iterations[key];
             if (iteration === undefined) {
@@ -37,10 +39,14 @@ define(function (require) {
                 this.iterations[key] = iteration;
             }
             iteration.acceptState(state, loop);
-            Array.prototype.forEach.call(iteration.element.children, function (node) {
-                this.element.appendChild(node);
-            }, this);
+            iteration.childNodes.forEach(function (node) {
+                docFrag.appendChild(node);
+            });
         }, this);
+        // TODO: It should probably be smarter about how it updates the list
+        // Like, it won't touch the node if it's in the correct spot
+        this.element.innerHTML = '';
+        this.element.appendChild(docFrag);
     };
 
 

@@ -6,14 +6,16 @@ define(function (require) {
 
     function IterationControl (element, expression) {
         Control.call(this, element, expression);
+
+        this.childNodes = Array.prototype.slice.call(element.childNodes, 0);
+
     }
     IterationControl.prototype = Object.create(Control.prototype);
     IterationControl.prototype.constructor = IterationControl;
 
 
     IterationControl.from = function (eachControl) {
-        var element = eachControl.template.cloneNode(true);
-        var iteration = new IterationControl(element);
+        var iteration = new IterationControl(eachControl.template.cloneNode(true));
         IterationControl.copyChildren(iteration, eachControl);
         return iteration;
     };

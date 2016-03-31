@@ -1,6 +1,7 @@
 define(function (require) {
     'use strict';
 
+    var Component = require('./Component');
     var IfControl = require('./IfControl');
     var EachControl = require('./EachControl');
     var OutputControl = require('./OutputControl');
@@ -12,27 +13,38 @@ define(function (require) {
     Lib.componentMap = {};
 
 
-    Lib.mount = function (element, Component, initialState) {
-        var rootComponent = new Component(element);
-        var stack = [];
+    Lib.mount = function (element, T, initialState) {
+        var rootComponent = new T(element);
+        var stack = [ rootComponent ];
         var eachControls = [];
         // TODO: `addToTree` should probably be refactored.
         var addToTree = function (control) {
             var element = control.element;
             var otherControl;
-            var i = stack.length;
+            var previousLength = stack.length;
+            var i;
             if (control.constructor !== OutputControl) {
                 stack.push(control);
             }
+
+            i = previousLength;
+            while (--i >= 0) {
+                otherControl = stack[i];
+                if (otherControl instanceof Component) {
+                    control.expression = control.expression.bind(otherControl);
+                    break;
+                }
+            }
+
+            i = previousLength;
             while (--i >= 0) {
                 otherControl = stack[i];
                 if (otherControl.element.contains(element) || otherControl.element === element) {
                     otherControl.children.push(control);
                     control.moldify(otherControl.id);
-                    return;
+                    break;
                 }
             }
-            rootComponent.children.push(control);
         };
         var elements = element.querySelectorAll('[data-if], [data-out], [data-component], [data-each]');
         Array.prototype.forEach.call(elements, function (element, i) {
@@ -51,9 +63,10 @@ define(function (require) {
                 addToTree(new OutputControl(element, compiled));
             }
             if (componentExpr !== undefined) {
-                var Component = Lib.componentMap[componentExpr];
+                // TODO: Think of a better way to do get the ComponentConstructor
+                var ComponentConstructor = Lib.componentMap[componentExpr];
                 compiled = Lib.compileExpression(element.dataset.state);
-                addToTree(new Component(element, compiled));
+                addToTree(new ComponentConstructor(element, compiled));
             }
             if (eachExpr !== undefined) {
                 var control;

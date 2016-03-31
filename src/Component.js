@@ -11,6 +11,8 @@ define(function (require) {
         this.state = Object.assign({}, this.constructor.defaults);
 
     }
+    Component.prototype = Object.create(Control.prototype);
+    Component.prototype.constructor = Component;
 
 
     Component.defaults = {};

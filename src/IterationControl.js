@@ -24,6 +24,7 @@ define(function (require) {
     IterationControl.copyChildren = function (target, template) {
         target.children = template.children.map(function (c) {
             var selector = '[data-control-' + template.id + '-' + c.id + ']';
+            // TODO: Make sure this works on elements that have multiple controls on them
             var clone = c.cloneOn(target.element.querySelector(selector));
             IterationControl.copyChildren(clone, c);
             return clone;

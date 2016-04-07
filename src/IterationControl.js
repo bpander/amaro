@@ -16,7 +16,7 @@ define(function (require) {
 
     IterationControl.from = function (eachControl) {
         var iteration = new IterationControl(eachControl.template.cloneNode(true));
-        IterationControl.copyChildren(iteration, eachControl);
+        // IterationControl.copyChildren(iteration, eachControl);
         return iteration;
     };
 

@@ -10,9 +10,12 @@ define(function (require) {
 
         this.children = [];
 
+        this.parent = null;
+
         this.id = _id++;
 
     }
+
 
     var _id = 1;
 
@@ -26,8 +29,10 @@ define(function (require) {
     };
 
 
-    Control.prototype.moldify = function (parentId) {
-        this.element.setAttribute('data-control-' + parentId + '-' + this.id, '');
+    Control.prototype.addChild = function (control) {
+        control.parent = this;
+        this.children.push(control);
+        control.element.setAttribute('data-control-' + this.id + '-' + control.id, '');
     };
 
 
@@ -47,6 +52,22 @@ define(function (require) {
         }
         instance.element = element;
         return instance;
+    };
+
+
+    Control.prototype.addToTree = function (control) {
+        var children = this.children;
+        var child;
+        var i;
+        var l;
+        for (i = 0, l = children.length; i < l; i++) {
+            child = children[i];
+            if (child.element.contains(control.element) || child.element === control.element) {
+                child.addToTree(control);
+                return;
+            }
+        }
+        this.addChild(control);
     };
 
 

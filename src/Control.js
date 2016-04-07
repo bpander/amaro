@@ -71,5 +71,14 @@ define(function (require) {
     };
 
 
+    Control.prototype.controlDidMount = function () {
+        var i;
+        var l;
+        for (i = 0, l = this.children.length; i < l; i++) {
+            this.children[i].controlDidMount();
+        }
+    };
+
+
     return Control;
 });

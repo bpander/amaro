@@ -35,15 +35,14 @@ define(function (require) {
         if (componentExpr !== null) {
             // TODO: Think of a better way to do get the ComponentConstructor
             var ComponentConstructor = Relapse.componentMap[componentExpr];
-            var compiled = Relapse.compileExpression(element.dataset.state);
+            var compiled = Relapse.compileExpression(element.getAttribute('data-state'));
             rootComponent.addToTree(new ComponentConstructor(element, compiled));
         }
         if (eachExpr !== null) {
-            var keyExpression = Relapse.compileExpression(element.dataset.key);
+            var keyExpression = Relapse.compileExpression(element.getAttribute('data-key'));
             var compiled = Relapse.compileExpression(eachExpr);
             var control = new EachControl(element, compiled, keyExpression);
             rootComponent.addToTree(control);
-            // eachControls.push(control);
         }
     };
 
@@ -51,18 +50,13 @@ define(function (require) {
     Relapse.mount = function (element, T, initialState) {
         var rootComponent = new T(element);
         var elements = element.querySelectorAll('[data-if], [data-out], [data-component], [data-each]');
-        for (var i = 0, l = elements.length; i < l; i++) {
+        var i;
+        var l;
+        for (i = 0, l = elements.length; i < l; i++) {
             Relapse.processElement(elements[i], rootComponent);
         }
 
-
-        // TODO: This is super unclear and needs to be cleaned up. Also 86 the forEach calls.
-        // eachControls.forEach(function (control) {
-        //     Array.prototype.forEach.call(control.element.children, function (node) {
-        //         control.template.appendChild(node);
-        //     });
-        // });
-
+        rootComponent.controlDidMount();
         rootComponent.setState(initialState);
 
         return rootComponent;

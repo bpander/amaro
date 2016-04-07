@@ -38,7 +38,7 @@ define(function (require) {
                 iteration = IterationControl.from(this);
                 this.iterations[key] = iteration;
             }
-            iteration.acceptState(state, loop);
+            iteration.acceptState(state, loop, thisArg);
             iteration.childNodes.forEach(function (node) {
                 docFrag.appendChild(node);
             });
@@ -47,6 +47,17 @@ define(function (require) {
         // Like, it won't touch the node if it's in the correct spot
         this.element.innerHTML = '';
         this.element.appendChild(docFrag);
+    };
+
+
+    EachControl.prototype.controlDidMount = function () {
+        var childElements = this.element.children;
+        var i;
+        var l;
+        for (i = 0, l = childElements.length; i < l; i++) {
+            this.template.appendChild(childElements[i]);
+        }
+        Control.prototype.controlDidMount.call(this);
     };
 
 

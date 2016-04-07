@@ -33,5 +33,23 @@ define(function (require) {
     };
 
 
+    Component.prototype.elementWillAttach = function (element, resolve) {
+        // TODO: Implement this method
+        resolve();
+    };
+
+
+    Component.prototype.elementWillDetach = function (element, resolve) {
+        // TODO: Implement this method
+        resolve();
+    };
+
+
+    Component.prototype.elementWillReorder = function (element, resolve) {
+        // TODO: Implement this method
+        resolve();
+    };
+
+
     return Component;
 });

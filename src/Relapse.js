@@ -78,6 +78,7 @@ define(function (require) {
             }
         });
 
+        // TODO: This is super unclear and needs to be cleaned up. Also 86 the forEach calls.
         eachControls.forEach(function (control) {
             Array.prototype.forEach.call(control.element.children, function (node) {
                 control.template.appendChild(node);

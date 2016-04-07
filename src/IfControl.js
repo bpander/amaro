@@ -26,8 +26,8 @@ define(function (require) {
     };
 
 
-    IfControl.prototype.acceptState = function (state, loop) {
-        if (this.expression(state, loop)) {
+    IfControl.prototype.acceptState = function (state, loop, thisArg) {
+        if (this.expression.call(thisArg, state, loop)) {
             this.attach();
             Control.prototype.acceptState.call(this, state, loop);
         } else {

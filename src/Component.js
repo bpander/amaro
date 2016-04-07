@@ -18,8 +18,8 @@ define(function (require) {
     Component.defaults = {};
 
 
-    Component.prototype.acceptState = function (state, loop) {
-        this.setState(this.expression(state, loop), loop);
+    Component.prototype.acceptState = function (state, loop, thisArg) {
+        this.setState(this.expression.call(thisArg, state, loop), loop);
     };
 
 
@@ -28,7 +28,7 @@ define(function (require) {
         var l;
         Object.assign(this.state, state);
         for (i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].acceptState(this.state, loop);
+            this.children[i].acceptState(this.state, loop, this);
         }
     };
 

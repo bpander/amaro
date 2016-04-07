@@ -20,11 +20,11 @@ define(function (require) {
     var _id = 1;
 
 
-    Control.prototype.acceptState = function (state, loop) {
+    Control.prototype.acceptState = function (state, loop, thisArg) {
         var i;
         var l;
         for (i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].acceptState(state, loop);
+            this.children[i].acceptState(state, loop, thisArg);
         }
     };
 

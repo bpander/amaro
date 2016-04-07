@@ -19,9 +19,9 @@ define(function (require) {
     EachControl.prototype.constructor = EachControl;
 
 
-    EachControl.prototype.acceptState = function (state, loop) {
+    EachControl.prototype.acceptState = function (state, loop, thisArg) {
         // TODO: This should also be able to iterate over objects
-        var arr = this.expression(state, loop);
+        var arr = this.expression.call(thisArg, state, loop);
         loop = {
             key: null,
             val: null,
@@ -32,7 +32,7 @@ define(function (require) {
             loop.key = i;
             loop.val = item;
             // TODO: The default should just key off of the index
-            var key = this.keyExpression(state, loop);
+            var key = this.keyExpression.call(thisArg, state, loop);
             var iteration = this.iterations[key];
             if (iteration === undefined) {
                 iteration = IterationControl.from(this);

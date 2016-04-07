@@ -50,21 +50,6 @@ define(function (require) {
 
     Relapse.mount = function (element, T, initialState) {
         var rootComponent = new T(element);
-        var eachControls = [];
-        // TODO: `addToTree` should probably be refactored.
-        var addToTree = function (control) {
-
-            i = previousLength;
-            while (--i >= 0) {
-                otherControl = stack[i];
-                if (otherControl instanceof Component) {
-                    control.expression = control.expression.bind(otherControl);
-                    break;
-                }
-            }
-
-        };
-
         var elements = element.querySelectorAll('[data-if], [data-out], [data-component], [data-each]');
         for (var i = 0, l = elements.length; i < l; i++) {
             Relapse.processElement(elements[i], rootComponent);

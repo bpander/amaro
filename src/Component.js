@@ -2,13 +2,13 @@ define(function (require) {
     'use strict';
 
     var Control = require('./Control');
+    var Util = require('./Util');
 
 
     function Component (element, expression) {
         Control.call(this, element, expression);
 
-        // TODO: Use a deep merge
-        this.state = Object.assign({}, this.constructor.defaults);
+        this.state = Util.deepCopy(this.constructor.defaults);
 
     }
     Component.prototype = Object.create(Control.prototype);
@@ -24,12 +24,12 @@ define(function (require) {
 
 
     Component.prototype.setState = function (state, loop) {
-        // TODO: Use a deep merge
-        // TODO: forEach probably not the best for performance, try regular loop?
+        var i;
+        var l;
         Object.assign(this.state, state);
-        this.children.forEach(function (c) {
-            c.acceptState(this.state, loop);
-        }, this);
+        for (i = 0, l = this.children.length; i < l; i++) {
+            this.children[i].acceptState(this.state, loop);
+        }
     };
 
 

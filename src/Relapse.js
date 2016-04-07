@@ -7,13 +7,13 @@ define(function (require) {
     var OutputControl = require('./OutputControl');
 
 
-    var Lib = {};
+    var Relapse = {};
 
 
-    Lib.componentMap = {};
+    Relapse.componentMap = {};
 
 
-    Lib.mount = function (element, T, initialState) {
+    Relapse.mount = function (element, T, initialState) {
         var rootComponent = new T(element);
         var stack = [ rootComponent ];
         var eachControls = [];
@@ -55,23 +55,23 @@ define(function (require) {
             var compiled;
 
             if (ifExpr !== undefined) {
-                compiled = Lib.compileExpression(ifExpr);
+                compiled = Relapse.compileExpression(ifExpr);
                 addToTree(new IfControl(element, compiled));
             }
             if (outExpr !== undefined) {
-                compiled = Lib.compileExpression(outExpr);
+                compiled = Relapse.compileExpression(outExpr);
                 addToTree(new OutputControl(element, compiled));
             }
             if (componentExpr !== undefined) {
                 // TODO: Think of a better way to do get the ComponentConstructor
-                var ComponentConstructor = Lib.componentMap[componentExpr];
-                compiled = Lib.compileExpression(element.dataset.state);
+                var ComponentConstructor = Relapse.componentMap[componentExpr];
+                compiled = Relapse.compileExpression(element.dataset.state);
                 addToTree(new ComponentConstructor(element, compiled));
             }
             if (eachExpr !== undefined) {
                 var control;
-                var keyExpression = Lib.compileExpression(element.dataset.key);
-                compiled = Lib.compileExpression(eachExpr);
+                var keyExpression = Relapse.compileExpression(element.dataset.key);
+                compiled = Relapse.compileExpression(eachExpr);
                 control = new EachControl(element, compiled, keyExpression);
                 addToTree(control);
                 eachControls.push(control);
@@ -90,11 +90,11 @@ define(function (require) {
     };
 
 
-    Lib.compileExpression = function (expression) {
+    Relapse.compileExpression = function (expression) {
         // comma-separated argument definition seems to be a little faster than the `new Function(arg1, arg2, body)` way
         return new Function('state, loop', 'return ' + expression + ';');
     };
 
 
-    return Lib;
+    return Relapse;
 });

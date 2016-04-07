@@ -49,12 +49,12 @@
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
         require([
-            '../../src/Lib',
+            '../../src/Relapse',
             '../../src/Component',
             './TodoApp',
             './TodoComponent'
         ], function (
-            Lib,
+            Relapse,
             Component,
             TodoApp,
             TodoComponent
@@ -62,10 +62,10 @@
 
             var element = document.getElementById('js-app');
 
-            Lib.componentMap['TodoApp'] = TodoApp;
-            Lib.componentMap['TodoComponent'] = TodoComponent;
+            Relapse.componentMap['TodoApp'] = TodoApp;
+            Relapse.componentMap['TodoComponent'] = TodoComponent;
 
-            window.app = Lib.mount(element, TodoApp, {
+            window.app = Relapse.mount(element, TodoApp, {
                 todos: [
                     { id: '1', text: 'Buy milk', complete: false },
                     { id: '2', text: 'Make bed', complete: true }

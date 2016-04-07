@@ -15,8 +15,8 @@ module.exports = function(grunt) {
                     findNestedDependencies: true,
                     baseUrl: 'src',
                     optimize: 'none',
-                    include: ['Lib.js'],
-                    out: 'State.js',
+                    include: ['Relapse.js'],
+                    out: 'Relapse.js',
                     wrap: {
                         start: '',
                         end: ''
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'State.min.js': ['State.js']
+                    'Relapse.min.js': ['Relapse.js']
                 }
             }
         }

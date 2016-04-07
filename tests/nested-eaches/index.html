@@ -23,15 +23,15 @@
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
         require([
-            '../../src/Lib',
+            '../../src/Relapse',
             '../../src/Component'
         ], function (
-            Lib,
+            Relapse,
             Component
         ) {
 
             var element = document.getElementById('js-app');
-            window.app = Lib.mount(element, Component, {
+            window.app = Relapse.mount(element, Component, {
                 todos: [
                     { id: '1', text: 'foo', actions: [{
                         id: '1'

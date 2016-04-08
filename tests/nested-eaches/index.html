@@ -9,13 +9,17 @@
         <ul data-each="state.todos" data-key="loop.val.id">
             <li>
                 <span data-out="{ textContent: loop.val.text }"></span>
+
+                <dl data-each="loop.val.actions[0]" data-key="loop.val.id">
+                    <dt data-out="{ textContent: loop.key }"></dt>
+                    <dd data-out="{ textContent: loop.val }"></dd>
+                </dl>
                 
                 <ul data-each="loop.val.actions" data-key="loop.val.id">
                     <li data-out="{
                         textContent: loop.val.id === loop.outer.val.id
                     }"></li>
                 </ul>
-                
             </li>
         </ul>
     </div>
@@ -33,14 +37,8 @@
             var element = document.getElementById('js-app');
             window.app = Relapse.mount(element, Component, {
                 todos: [
-                    { id: '1', text: 'foo', actions: [{
-                        id: '1'
-                    }
-                    ] },
-                    { id: '2', text: 'bar', actions: [{
-                        id: '1'
-                    }
-                    ] }
+                    { id: '1', text: 'foo', actions: [{ id: '1' }] },
+                    { id: '2', text: 'bar', actions: [{ id: '1' }] }
                 ]
             });
         });

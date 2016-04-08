@@ -20,23 +20,22 @@ define(function (require) {
 
 
     EachControl.prototype.acceptState = function (state, loop, thisArg) {
-        // TODO: This should also be able to iterate over objects
-        var arr = this.expression.call(thisArg, state, loop);
+        var obj = this.expression.call(thisArg, state, loop);
         loop = {
             key: null,
             val: null,
             outer: loop
         };
         var docFrag = document.createDocumentFragment();
-        arr.forEach(function (item, i) {
-            loop.key = i;
-            loop.val = item;
+        Object.keys(obj).forEach(function (key) {
+            loop.key = key;
+            loop.val = obj[key];
             // TODO: The default should just key off of the index
-            var key = this.keyExpression.call(thisArg, state, loop);
-            var iteration = this.iterations[key];
+            var iterationKey = this.keyExpression.call(thisArg, state, loop);
+            var iteration = this.iterations[iterationKey];
             if (iteration === undefined) {
                 iteration = IterationControl.from(this);
-                this.iterations[key] = iteration;
+                this.iterations[iterationKey] = iteration;
             }
             iteration.acceptState(state, loop, thisArg);
             iteration.childNodes.forEach(function (node) {
@@ -51,7 +50,7 @@ define(function (require) {
 
 
     EachControl.prototype.controlDidMount = function () {
-        var childElements = this.element.children;
+        var childElements = Array.prototype.slice.call(this.element.children);
         var i;
         var l;
         for (i = 0, l = childElements.length; i < l; i++) {

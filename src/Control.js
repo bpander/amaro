@@ -38,11 +38,14 @@ define(function (require) {
 
     Control.prototype.cloneOn = function (element) {
         var Constructor = this.constructor;
-        var instance = new Constructor();
+        var instance = new Constructor(element);
         var prop;
         for (prop in instance) {
             if (instance.hasOwnProperty(prop)) {
                 // TODO: There needs to be a better way of knowing if a property should be a clone or a reference
+                if (prop === 'element' || prop === 'parentNode') {
+                    continue;
+                }
                 if (prop === 'iterations') {
                     instance.iterations = {};
                 } else {
@@ -50,7 +53,6 @@ define(function (require) {
                 }
             }
         }
-        instance.element = element;
         return instance;
     };
 

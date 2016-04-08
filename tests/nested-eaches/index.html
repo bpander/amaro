@@ -14,8 +14,8 @@
                     <dt data-out="{ textContent: loop.key }"></dt>
                     <dd data-out="{ textContent: loop.val }"></dd>
                 </dl>
-                
-                <ul data-each="loop.val.actions">
+
+                <ul data-if="state.bool" data-each="loop.val.actions">
                     <li data-out="{
                         textContent: loop.val.id === loop.outer.val.id
                     }"></li>
@@ -39,7 +39,8 @@
                 todos: [
                     { id: '1', text: 'foo', actions: [{ id: '1' }] },
                     { id: '2', text: 'bar', actions: [{ id: '1' }] }
-                ]
+                ],
+                bool: false
             });
         });
     </script>

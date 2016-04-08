@@ -25,7 +25,15 @@ define(function (require) {
         target.children = template.children.map(function (c) {
             var selector = '[data-control-' + template.id + '-' + c.id + ']';
             // TODO: Make sure this works on elements that have multiple controls on them
-            var clone = c.cloneOn(target.element.querySelector(selector));
+            var element = target.element.querySelector(selector);
+            if (element === null) {
+                if (target.element.matches(selector)) {
+                    element = target.element;
+                } else {
+                    element = target.template.querySelector(selector);
+                }
+            }
+            var clone = c.cloneOn(element);
             IterationControl.copyChildren(clone, c);
             return clone;
         });

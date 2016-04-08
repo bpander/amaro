@@ -39,7 +39,7 @@ define(function (require) {
             rootComponent.addToTree(new ComponentConstructor(element, compiled));
         }
         if (eachExpr !== null) {
-            var keyExpression = Relapse.compileExpression(element.getAttribute('data-key'));
+            var keyExpression = Relapse.compileExpression(element.getAttribute('data-key') || Relapse.defaultKeyExpression);
             var compiled = Relapse.compileExpression(eachExpr);
             var control = new EachControl(element, compiled, keyExpression);
             rootComponent.addToTree(control);
@@ -67,6 +67,9 @@ define(function (require) {
         // comma-separated argument definition seems to be a little faster than the `new Function(arg1, arg2, body)` way
         return new Function('state, loop', 'return ' + expression + ';');
     };
+
+
+    Relapse.defaultKeyExpression = 'loop.key';
 
 
     return Relapse;

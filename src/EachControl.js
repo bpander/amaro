@@ -30,7 +30,6 @@ define(function (require) {
         Object.keys(obj).forEach(function (key) {
             loop.key = key;
             loop.val = obj[key];
-            // TODO: The default should just key off of the index
             var iterationKey = this.keyExpression.call(thisArg, state, loop);
             var iteration = this.iterations[iterationKey];
             if (iteration === undefined) {

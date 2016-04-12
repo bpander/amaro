@@ -49,6 +49,12 @@ define(function (require) {
     };
 
 
+    EachControl.prototype.copyChildrenFrom = function (source) {
+        this.template = source.template;
+        Control.prototype.copyChildrenFrom.call(this, source);
+    };
+
+
     EachControl.prototype.controlDidMount = function () {
         var childElements = Array.prototype.slice.call(this.element.children);
         var i;
@@ -56,13 +62,15 @@ define(function (require) {
         for (i = 0, l = childElements.length; i < l; i++) {
             this.template.appendChild(childElements[i]);
         }
-        Control.prototype.controlDidMount.call(this);
+        // TODO: Clean this up
+        // Control.prototype.controlDidMount.call(this);
     };
 
 
     EachControl.prototype.createIteration = function () {
         var element = this.template.cloneNode(true);
         var iteration = new IterationControl(element);
+        iteration.parent = this;
         iteration.copyChildrenFrom(this);
         return iteration;
     };

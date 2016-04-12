@@ -80,11 +80,13 @@ define(function (require) {
             }
 
             // TODO: Think of a better way to do this
+            // TODO: There's a bug here with nested eaches, the source and child IDs get out of whack
             if (element === null) {
                 this.template.querySelector('[' + attribute + ']');
             }
 
             var clone = child.cloneOn(element);
+            clone.parent = this;
             return clone;
         }, this);
     };

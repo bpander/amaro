@@ -26,6 +26,7 @@ define(function (require) {
             val: null,
             outer: loop
         };
+
         var docFrag = document.createDocumentFragment();
         Object.keys(obj).forEach(function (key) {
             loop.key = key;
@@ -33,7 +34,7 @@ define(function (require) {
             var iterationKey = this.keyExpression.call(thisArg, state, loop);
             var iteration = this.iterations[iterationKey];
             if (iteration === undefined) {
-                iteration = IterationControl.from(this);
+                iteration = this.createIteration();
                 this.iterations[iterationKey] = iteration;
             }
             iteration.acceptState(state, loop, thisArg);
@@ -56,6 +57,14 @@ define(function (require) {
             this.template.appendChild(childElements[i]);
         }
         Control.prototype.controlDidMount.call(this);
+    };
+
+
+    EachControl.prototype.createIteration = function () {
+        var element = this.template.cloneNode(true);
+        var iteration = new IterationControl(element);
+        iteration.copyChildrenFrom(this);
+        return iteration;
     };
 
 

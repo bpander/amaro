@@ -19,8 +19,8 @@ define(function (require) {
 
 
     Relapse.processElement = function (element, rootComponent) {
-        var outExpr = element.getAttribute('data-out');
         var ifExpr = element.getAttribute('data-if');
+        var outExpr = element.getAttribute('data-out');
         var componentExpr = element.getAttribute('data-component');
         var eachExpr = element.getAttribute('data-each');
 

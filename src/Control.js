@@ -38,21 +38,8 @@ define(function (require) {
 
     Control.prototype.cloneOn = function (element) {
         var Constructor = this.constructor;
-        var instance = new Constructor(element);
-        var prop;
-        for (prop in instance) {
-            if (instance.hasOwnProperty(prop)) {
-                // TODO: There needs to be a better way of knowing if a property should be a clone or a reference
-                if (prop === 'element' || prop === 'parentNode') {
-                    continue;
-                }
-                if (prop === 'iterations') {
-                    instance.iterations = {};
-                } else {
-                    instance[prop] = this[prop];
-                }
-            }
-        }
+        var instance = new Constructor(element, this.expression, this.keyExpression);
+        instance.copyChildrenFrom(this);
         return instance;
     };
 
@@ -79,6 +66,27 @@ define(function (require) {
         for (i = 0, l = this.children.length; i < l; i++) {
             this.children[i].controlDidMount();
         }
+    };
+
+
+    Control.prototype.copyChildrenFrom = function (source) {
+        this.children = source.children.map(function (child) {
+            var element;
+            var attribute = 'data-control-' + source.id + '-' + child.id;
+            if (this.element.getAttribute(attribute) !== null) {
+                element = this.element;
+            } else {
+                element = this.element.querySelector('[' + attribute + ']');
+            }
+
+            // TODO: Think of a better way to do this
+            if (element === null) {
+                this.template.querySelector('[' + attribute + ']');
+            }
+
+            var clone = child.cloneOn(element);
+            return clone;
+        }, this);
     };
 
 

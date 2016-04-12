@@ -8,16 +8,9 @@
     <div id="js-app">
         <ul data-each="state.todos" data-key="loop.val.id">
             <li>
-                <span data-out="{ textContent: loop.val.text }"></span>
-
-                <dl data-each="loop.val.actions[0]" data-key="loop.val.id">
-                    <dt data-out="{ textContent: loop.key }"></dt>
-                    <dd data-out="{ textContent: loop.val }"></dd>
-                </dl>
-
-                <ul data-if="state.bool" data-each="loop.val.actions">
+                <ul data-each="loop.val.actions">
                     <li data-out="{
-                        textContent: loop.val.id === loop.outer.val.id
+                        textContent: 'yata: ' + loop.val.id === loop.outer.val.id
                     }"></li>
                 </ul>
             </li>

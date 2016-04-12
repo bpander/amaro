@@ -12,6 +12,8 @@ define(function (require) {
 
         this.parent = null;
 
+        this.original = this;
+
         this.id = _id++;
 
     }
@@ -39,6 +41,7 @@ define(function (require) {
     Control.prototype.cloneOn = function (element) {
         var Constructor = this.constructor;
         var instance = new Constructor(element, this.expression, this.keyExpression);
+        instance.original = this.original;
         instance.copyChildrenFrom(this);
         return instance;
     };
@@ -72,7 +75,7 @@ define(function (require) {
     Control.prototype.copyChildrenFrom = function (source) {
         this.children = source.children.map(function (child) {
             var element;
-            var attribute = 'data-control-' + source.id + '-' + child.id;
+            var attribute = 'data-control-' + source.original.id + '-' + child.original.id;
             if (this.element.getAttribute(attribute) !== null) {
                 element = this.element;
             } else {

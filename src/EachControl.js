@@ -56,14 +56,13 @@ define(function (require) {
 
 
     EachControl.prototype.controlDidMount = function () {
+        Control.prototype.controlDidMount.call(this);
         var childElements = Array.prototype.slice.call(this.element.children);
         var i;
         var l;
         for (i = 0, l = childElements.length; i < l; i++) {
             this.template.appendChild(childElements[i]);
         }
-        // TODO: Clean this up
-        // Control.prototype.controlDidMount.call(this);
     };
 
 

@@ -9,7 +9,7 @@
         <ul data-each="state.todos" data-key="loop.val.id">
             <li>
                 <ul data-each="loop.val.actions">
-                    <li data-out="{
+                    <li data-if="state.bool" data-out="{
                         textContent: 'yata: ' + (loop.val.id === loop.outer.val.id)
                     }"></li>
                 </ul>

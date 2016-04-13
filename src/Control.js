@@ -83,9 +83,9 @@ define(function (require) {
             }
 
             // TODO: Think of a better way to do this
-            // TODO: There's a bug here with nested eaches, the source and child IDs get out of whack
+            // TODO: There's a bug here when an IfControl is the first child of an EachControl, it's parentNode and sibling references get messed up
             if (element === null) {
-                this.template.querySelector('[' + attribute + ']');
+                element = this.template.querySelector('[' + attribute + ']');
             }
 
             var clone = child.cloneOn(element);

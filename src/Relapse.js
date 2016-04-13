@@ -17,8 +17,6 @@ define(function (require) {
 
     Relapse.componentMap = {};
 
-    var _eaches = [];
-
 
     Relapse.processElement = function (element, rootComponent) {
         var ifExpr = element.getAttribute('data-if');
@@ -44,7 +42,6 @@ define(function (require) {
             var keyExpression = Relapse.compileExpression(element.getAttribute('data-key') || Relapse.defaultKeyExpression);
             var compiled = Relapse.compileExpression(eachExpr);
             var control = new EachControl(element, compiled, keyExpression);
-            _eaches.push(control);
             rootComponent.addToTree(control);
         }
     };
@@ -59,10 +56,7 @@ define(function (require) {
             Relapse.processElement(elements[i], rootComponent);
         }
 
-        // TODO: Clean this up
-        _eaches.reverse().forEach(function (each) {
-            each.controlDidMount();
-        });
+        rootComponent.controlDidMount();
         rootComponent.setState(initialState);
 
         return rootComponent;

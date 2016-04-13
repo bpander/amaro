@@ -45,7 +45,7 @@ define(function (require) {
             delete this.iterations[iterationKey];
             iterations[iterationKey] = iteration;
 
-            // If the iteration has a new index, append it now
+            // If the iteration has a different index than what it used to, append it now
             if (iteration.index !== i) {
                 iteration.index = i;
                 iteration.childNodes.forEach(function (node) {

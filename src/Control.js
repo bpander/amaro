@@ -76,7 +76,7 @@ define(function (require) {
         this.children = source.children.map(function (child) {
             var element;
             var attribute = 'data-control-' + source.original.id + '-' + child.original.id;
-            if (this.element.getAttribute(attribute) !== null) {
+            if (this.element.hasAttribute(attribute)) {
                 element = this.element;
             } else {
                 element = this.element.querySelector('[' + attribute + ']');

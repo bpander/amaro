@@ -21,29 +21,52 @@ define(function (require) {
 
     EachControl.prototype.acceptState = function (state, loop, thisArg) {
         var obj = this.expression.call(thisArg, state, loop);
+        var iterations = {};
         loop = {
             key: null,
             val: null,
             outer: loop
         };
 
-        // TODO: It should probably be smarter about how it updates the list
-        // Like, it won't touch the nodes if they're in the correct spot
-        this.element.innerHTML = '';
-        Object.keys(obj).forEach(function (key) {
+        Object.keys(obj).forEach(function (key, i) {
+
+            // Manage loop vars
             loop.key = key;
             loop.val = obj[key];
+
+            // Grab the cached iteration or create a new one if necessary
             var iterationKey = this.keyExpression.call(thisArg, state, loop);
             var iteration = this.iterations[iterationKey];
             if (iteration === undefined) {
                 iteration = this.createIteration();
-                this.iterations[iterationKey] = iteration;
             }
-            iteration.childNodes.forEach(function (node) {
-                this.element.appendChild(node);
-            }, this);
+
+            // Move the iteration from the old hash table to the new one
+            delete this.iterations[iterationKey];
+            iterations[iterationKey] = iteration;
+
+            // If the iteration has a new index, append it now
+            if (iteration.index !== i) {
+                iteration.index = i;
+                iteration.childNodes.forEach(function (node) {
+                    this.element.appendChild(node);
+                }, this);
+            }
+
+            // Trickle the state down
             iteration.acceptState(state, loop, thisArg);
         }, this);
+
+        // Detach leftover iterations from the old hash table
+        Object.keys(this.iterations).forEach(function (key) {
+            var iteration = this.iterations[key];
+            iteration.childNodes.forEach(function (node) {
+                this.element.removeChild(node);
+            }, this);
+        }, this);
+
+        // Store a reference to the new hash table
+        this.iterations = iterations;
     };
 
 

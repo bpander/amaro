@@ -83,7 +83,6 @@ define(function (require) {
             }
 
             // TODO: Think of a better way to do this
-            // TODO: There's a bug here when an IfControl is the first child of an EachControl, it's parentNode and sibling references get messed up
             if (element === null) {
                 element = this.template.querySelector('[' + attribute + ']');
             }

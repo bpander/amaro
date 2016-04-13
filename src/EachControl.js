@@ -27,7 +27,9 @@ define(function (require) {
             outer: loop
         };
 
-        var docFrag = document.createDocumentFragment();
+        // TODO: It should probably be smarter about how it updates the list
+        // Like, it won't touch the nodes if they're in the correct spot
+        this.element.innerHTML = '';
         Object.keys(obj).forEach(function (key) {
             loop.key = key;
             loop.val = obj[key];
@@ -37,15 +39,11 @@ define(function (require) {
                 iteration = this.createIteration();
                 this.iterations[iterationKey] = iteration;
             }
-            iteration.acceptState(state, loop, thisArg);
             iteration.childNodes.forEach(function (node) {
-                docFrag.appendChild(node);
-            });
+                this.element.appendChild(node);
+            }, this);
+            iteration.acceptState(state, loop, thisArg);
         }, this);
-        // TODO: It should probably be smarter about how it updates the list
-        // Like, it won't touch the node if it's in the correct spot
-        this.element.innerHTML = '';
-        this.element.appendChild(docFrag);
     };
 
 

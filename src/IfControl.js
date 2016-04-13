@@ -50,9 +50,13 @@ define(function (require) {
 
 
     IfControl.prototype.detach = function () {
-        if (this.element.parentNode === this.parentNode) {
-            this.parentNode.removeChild(this.element);
+        var parentNode = this.element.parentNode;
+        if (parentNode === null) {
+            return;
         }
+        this.parentNode = parentNode;
+        this.nextSiblings = IfControl.getNextSiblings(this.element);
+        this.parentNode.removeChild(this.element);
     };
 
 

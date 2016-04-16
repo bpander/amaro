@@ -56,9 +56,8 @@ define(function (require) {
             Relapse.processElement(elements[i], rootComponent);
         }
 
-        rootComponent.controlWillMount();
+        rootComponent.controlDidParse();
         rootComponent.setState(initialState);
-        rootComponent.controlDidMount();
 
         return rootComponent;
     };

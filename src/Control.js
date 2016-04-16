@@ -63,20 +63,11 @@ define(function (require) {
     };
 
 
-    Control.prototype.controlWillMount = function () {
+    Control.prototype.controlDidParse = function () {
         var i;
         var l;
         for (i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].controlWillMount();
-        }
-    };
-
-
-    Control.prototype.controlDidMount = function () {
-        var i;
-        var l;
-        for (i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].controlDidMount();
+            this.children[i].controlDidParse();
         }
     };
 

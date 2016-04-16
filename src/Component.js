@@ -10,24 +10,14 @@ define(function (require) {
 
         this.state = Util.deepCopy(this.constructor.defaults);
 
+        this.isMounted = false;
+
     }
     Component.prototype = Object.create(Control.prototype);
     Component.prototype.constructor = Component;
 
 
     Component.defaults = {};
-
-
-    Component.prototype.controlWillMount = function () {
-        Control.prototype.controlWillMount.call(this);
-        this.componentWillMount();
-    };
-
-
-    Component.prototype.controlDidMount = function () {
-        Control.prototype.controlDidMount.call(this);
-        this.componentDidMount();
-    };
 
 
     Component.prototype.acceptState = function (state, loop, thisArg) {
@@ -39,8 +29,15 @@ define(function (require) {
         var i;
         var l;
         Object.assign(this.state, state);
+        (this.isMounted) ? this.componentWillUpdate() : this.componentWillMount();
         for (i = 0, l = this.children.length; i < l; i++) {
             this.children[i].acceptState(this.state, loop, this);
+        }
+        if (this.isMounted) {
+            this.componentDidUpdate();
+        } else {
+            this.isMounted = true;
+            this.componentDidMount();
         }
     };
 

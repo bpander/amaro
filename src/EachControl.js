@@ -76,8 +76,8 @@ define(function (require) {
     };
 
 
-    EachControl.prototype.controlWillMount = function () {
-        Control.prototype.controlWillMount.call(this);
+    EachControl.prototype.controlDidParse = function () {
+        Control.prototype.controlDidParse.call(this);
         var childElements = Array.prototype.slice.call(this.element.children);
         var i;
         var l;

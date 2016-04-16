@@ -18,5 +18,15 @@ define(function (require) {
     };
 
 
+    TodoComponent.prototype.componentWillMount = function () {
+        console.log('componentWillMount');
+    };
+
+
+    TodoComponent.prototype.componentDidMount = function () {
+        console.log('componentDidMount');
+    };
+
+
     return TodoComponent;
 });

@@ -18,6 +18,18 @@ define(function (require) {
     Component.defaults = {};
 
 
+    Component.prototype.controlWillMount = function () {
+        Control.prototype.controlWillMount.call(this);
+        this.componentWillMount();
+    };
+
+
+    Component.prototype.controlDidMount = function () {
+        Control.prototype.controlDidMount.call(this);
+        this.componentDidMount();
+    };
+
+
     Component.prototype.acceptState = function (state, loop, thisArg) {
         this.setState(this.expression.call(thisArg, state, loop), loop);
     };
@@ -33,21 +45,23 @@ define(function (require) {
     };
 
 
-    Component.prototype.elementWillAttach = function (element, resolve) {
-        // TODO: Implement this method
-        resolve();
+    Component.prototype.componentWillMount = function () {
     };
 
 
-    Component.prototype.elementWillDetach = function (element, resolve) {
-        // TODO: Implement this method
-        resolve();
+    Component.prototype.componentDidMount = function () {
     };
 
 
-    Component.prototype.elementWillReorder = function (element, resolve) {
-        // TODO: Implement this method
-        resolve();
+    Component.prototype.componentWillUpdate = function () {
+    };
+
+
+    Component.prototype.componentDidUpdate = function () {
+    };
+
+
+    Component.prototype.componentWillUnmount = function () {
     };
 
 

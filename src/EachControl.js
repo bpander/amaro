@@ -3,12 +3,13 @@ define(function (require) {
 
     var Control = require('./Control');
     var IterationControl = require('./IterationControl');
+    var Util = require('./Util');
 
 
-    function EachControl (element, expression, keyExpression) {
-        Control.call(this, element, expression);
+    function EachControl (element) {
+        Control.call(this, element);
 
-        this.keyExpression = keyExpression;
+        this.keyExpression = Util.noop;
 
         this.template = document.createElement('template');
 

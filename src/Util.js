@@ -5,6 +5,9 @@ define(function (require) {
     var Util = {};
 
 
+    Util.noop = Function.prototype;
+
+
     /**
      * Create a deep copy of an object. Adapted from http://stackoverflow.com/a/728694/1159534.
      *
@@ -52,7 +55,14 @@ define(function (require) {
     };
 
 
-    Util.noop = Function.prototype;
+    Util.getNextSiblings = function (element) {
+        var sibling = element;
+        var nextSiblings = [];
+        while ((sibling = sibling.nextSibling) !== null) {
+            nextSiblings.push(sibling);
+        }
+        return nextSiblings;
+    };
 
 
     return Util;

@@ -4,8 +4,8 @@ define(function (require) {
     var Control = require('./Control');
 
 
-    function IterationControl (element, expression) {
-        Control.call(this, element, expression);
+    function IterationControl (element) {
+        Control.call(this, element);
 
         this.childNodes = Array.prototype.slice.call(element.childNodes, 0);
 

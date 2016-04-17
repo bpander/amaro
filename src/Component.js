@@ -5,8 +5,8 @@ define(function (require) {
     var Util = require('./Util');
 
 
-    function Component (element, expression) {
-        Control.call(this, element, expression);
+    function Component (element) {
+        Control.call(this, element);
 
         this.state = Util.deepCopy(this.constructor.defaults);
 

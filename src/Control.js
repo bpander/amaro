@@ -1,12 +1,14 @@
 define(function (require) {
     'use strict';
 
+    var Util = require('./Util');
 
-    function Control (element, expression) {
+
+    function Control (element) {
 
         this.element = element;
 
-        this.expression = expression;
+        this.expression = Util.noop;
 
         this.children = [];
 
@@ -40,7 +42,11 @@ define(function (require) {
 
     Control.prototype.cloneOn = function (element) {
         var Constructor = this.constructor;
-        var instance = new Constructor(element, this.expression, this.keyExpression);
+        var instance = new Constructor(element);
+        instance.expression = this.expression;
+        if (this.keyExpression !== undefined) {
+            instance.keyExpression = this.keyExpression;
+        }
         instance.original = this.original;
         instance.copyChildrenFrom(this);
         return instance;

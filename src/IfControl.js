@@ -5,12 +5,12 @@ define(function (require) {
     var Util = require('./Util');
 
 
-    function IfControl (element, expression) {
-        Control.call(this, element, expression);
+    function IfControl (element) {
+        Control.call(this, element);
 
         this.parentNode = element.parentNode;
 
-        this.nextSiblings = IfControl.getNextSiblings(element);
+        this.nextSiblings = Util.getNextSiblings(element);
 
         this.isAttached = true;
 
@@ -23,16 +23,6 @@ define(function (require) {
     }
     IfControl.prototype = Object.create(Control.prototype);
     IfControl.prototype.constructor = IfControl;
-
-
-    IfControl.getNextSiblings = function (element) {
-        var sibling = element;
-        var nextSiblings = [];
-        while ((sibling = sibling.nextSibling) !== null) {
-            nextSiblings.push(sibling);
-        }
-        return nextSiblings;
-    };
 
 
     IfControl.prototype.acceptState = function (state, loop, thisArg) {
@@ -89,7 +79,7 @@ define(function (require) {
         // TODO: Clean this up
         if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
             this.parentNode = this.element.parentNode;
-            this.nextSiblings = IfControl.getNextSiblings(this.element);
+            this.nextSiblings = Util.getNextSiblings(this.element);
             this.parentNode.removeChild(this.element);
             return;
         }
@@ -101,7 +91,7 @@ define(function (require) {
         this.fn();
         this.fn = function () {
             this.parentNode = this.element.parentNode;
-            this.nextSiblings = IfControl.getNextSiblings(this.element);
+            this.nextSiblings = Util.getNextSiblings(this.element);
             this.parentNode.removeChild(this.element);
             classList.remove('-leave', '-leave-active');
             this.fn = Util.noop;

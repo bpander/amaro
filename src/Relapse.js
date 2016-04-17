@@ -23,25 +23,29 @@ define(function (require) {
         var outExpr = element.getAttribute('data-out');
         var componentExpr = element.getAttribute('data-component');
         var eachExpr = element.getAttribute('data-each');
+        var control;
 
         if (ifExpr !== null) {
-            var compiled = Relapse.compileExpression(ifExpr);
-            rootComponent.addToTree(new IfControl(element, compiled));
+            control = new IfControl(element);
+            control.expression = Relapse.compileExpression(ifExpr);
+            rootComponent.addToTree(control);
         }
         if (outExpr !== null) {
-            var compiled = Relapse.compileExpression(outExpr);
-            rootComponent.addToTree(new OutputControl(element, compiled));
+            control = new OutputControl(element);
+            control.expression = Relapse.compileExpression(outExpr);
+            rootComponent.addToTree(control);
         }
         if (componentExpr !== null) {
             // TODO: Think of a better way to do get the ComponentConstructor
             var ComponentConstructor = Relapse.componentMap[componentExpr];
-            var compiled = Relapse.compileExpression(element.getAttribute('data-state'));
-            rootComponent.addToTree(new ComponentConstructor(element, compiled));
+            control = new ComponentConstructor(element);
+            control.expression = Relapse.compileExpression(element.getAttribute('data-state'));
+            rootComponent.addToTree(control);
         }
         if (eachExpr !== null) {
-            var keyExpression = Relapse.compileExpression(element.getAttribute('data-key') || Relapse.defaultKeyExpression);
-            var compiled = Relapse.compileExpression(eachExpr);
-            var control = new EachControl(element, compiled, keyExpression);
+            control = new EachControl(element);
+            control.expression = Relapse.compileExpression(eachExpr);
+            control.keyExpression = Relapse.compileExpression(element.getAttribute('data-key') || Relapse.defaultKeyExpression);
             rootComponent.addToTree(control);
         }
     };

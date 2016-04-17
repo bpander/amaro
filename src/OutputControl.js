@@ -4,8 +4,8 @@ define(function (require) {
     var Control = require('./Control');
 
 
-    function OutputControl (element, expression) {
-        Control.call(this, element, expression);
+    function OutputControl (element) {
+        Control.call(this, element);
 
     }
     OutputControl.prototype = Object.create(Control.prototype);

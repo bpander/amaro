@@ -1,6 +1,7 @@
 define(function (require) {
     'use strict';
 
+    var AnimationQueue = require('./AnimationQueue');
     var Control = require('./Control');
     var Util = require('./Util');
 
@@ -16,9 +17,7 @@ define(function (require) {
 
         this.isMounted = false;
 
-        this.timeoutId = -1;
-
-        this.fn = Util.noop;
+        this.animationQueue = new AnimationQueue();
 
     }
     IfControl.prototype = Object.create(Control.prototype);
@@ -50,24 +49,14 @@ define(function (require) {
                 break;
             }
         }
-        if (!this.element.hasAttribute('data-animate')) {
+        var insertFn = function () {
             this.parentNode.insertBefore(this.element, ref);
+        }.bind(this);
+        if (!this.element.hasAttribute('data-animate')) {
+            insertFn();
             return;
         }
-        // TODO: This needs some cleaning up
-        // TODO: Take transition-delay into account
-        var classList = this.element.classList;
-        classList.add('-enter');
-        this.fn();
-        this.parentNode.insertBefore(this.element, ref);
-        var transitionDuration = Math.max.apply(null, getComputedStyle(this.element).transitionDuration.split(/,\s?/).map(parseFloat)) * 1000;
-        classList.add('-enter-active');
-        clearTimeout(this.timeoutId);
-        this.fn = function () {
-            classList.remove('-enter', '-enter-active');
-            this.fn = Util.noop;
-        }.bind(this);
-        this.timeoutId = setTimeout(this.fn, transitionDuration);
+        this.animationQueue.jumpToEnd().add(this.element, insertFn);
     };
 
 
@@ -76,27 +65,16 @@ define(function (require) {
             return;
         }
         this.isAttached = false;
-        // TODO: Clean this up
-        if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
+        var removeFn = function () {
             this.parentNode = this.element.parentNode;
             this.nextSiblings = Util.getNextSiblings(this.element);
             this.parentNode.removeChild(this.element);
+        }.bind(this);
+        if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
+            removeFn();
             return;
         }
-        var classList = this.element.classList;
-        classList.add('-leave');
-        var transitionDuration = Math.max.apply(null, getComputedStyle(this.element).transitionDuration.split(/,\s?/).map(parseFloat)) * 1000;
-        classList.add('-leave-active');
-        clearTimeout(this.timeoutId);
-        this.fn();
-        this.fn = function () {
-            this.parentNode = this.element.parentNode;
-            this.nextSiblings = Util.getNextSiblings(this.element);
-            this.parentNode.removeChild(this.element);
-            classList.remove('-leave', '-leave-active');
-            this.fn = Util.noop;
-        }.bind(this);
-        this.timeoutId = setTimeout(this.fn, transitionDuration);
+        this.animationQueue.jumpToEnd().remove(this.element, removeFn);
     };
 
 

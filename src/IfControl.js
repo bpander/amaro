@@ -37,6 +37,9 @@ define(function (require) {
 
 
     IfControl.prototype.attach = function () {
+        if (document.contains(this.element)) {
+            return;
+        }
         var i = -1;
         var sibling;
         while ((sibling = this.nextSiblings[++i]) !== undefined) {

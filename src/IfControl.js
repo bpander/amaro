@@ -2,6 +2,7 @@ define(function (require) {
     'use strict';
 
     var Control = require('./Control');
+    var Util = require('./Util');
 
 
     function IfControl (element, expression) {
@@ -10,6 +11,14 @@ define(function (require) {
         this.parentNode = element.parentNode;
 
         this.nextSiblings = IfControl.getNextSiblings(element);
+
+        this.isAttached = true;
+
+        this.isMounted = false;
+
+        this.timeoutId = -1;
+
+        this.fn = Util.noop;
 
     }
     IfControl.prototype = Object.create(Control.prototype);
@@ -33,13 +42,15 @@ define(function (require) {
         } else {
             this.detach();
         }
+        this.isMounted = true;
     };
 
 
     IfControl.prototype.attach = function () {
-        if (document.contains(this.element)) {
+        if (this.isAttached) {
             return;
         }
+        this.isAttached = true;
         var i = -1;
         var sibling;
         var ref = null;
@@ -54,26 +65,48 @@ define(function (require) {
             return;
         }
         // TODO: This needs some cleaning up
+        // TODO: Take transition-delay into account
         var classList = this.element.classList;
-        classList.remove('-enter-active');
         classList.add('-enter');
+        this.fn();
         this.parentNode.insertBefore(this.element, ref);
         var transitionDuration = Math.max.apply(null, getComputedStyle(this.element).transitionDuration.split(/,\s?/).map(parseFloat)) * 1000;
         classList.add('-enter-active');
-        setTimeout(function () {
+        clearTimeout(this.timeoutId);
+        this.fn = function () {
             classList.remove('-enter', '-enter-active');
-        }.bind(this), transitionDuration);
+            this.fn = Util.noop;
+        }.bind(this);
+        this.timeoutId = setTimeout(this.fn, transitionDuration);
     };
 
 
     IfControl.prototype.detach = function () {
-        var parentNode = this.element.parentNode;
-        if (parentNode === null) {
+        if (!this.isAttached) {
             return;
         }
-        this.parentNode = parentNode;
-        this.nextSiblings = IfControl.getNextSiblings(this.element);
-        this.parentNode.removeChild(this.element);
+        this.isAttached = false;
+        // TODO: Clean this up
+        if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
+            this.parentNode = this.element.parentNode;
+            this.nextSiblings = IfControl.getNextSiblings(this.element);
+            this.parentNode.removeChild(this.element);
+            return;
+        }
+        var classList = this.element.classList;
+        classList.add('-leave');
+        var transitionDuration = Math.max.apply(null, getComputedStyle(this.element).transitionDuration.split(/,\s?/).map(parseFloat)) * 1000;
+        classList.add('-leave-active');
+        clearTimeout(this.timeoutId);
+        this.fn();
+        this.fn = function () {
+            this.parentNode = this.element.parentNode;
+            this.nextSiblings = IfControl.getNextSiblings(this.element);
+            this.parentNode.removeChild(this.element);
+            classList.remove('-leave', '-leave-active');
+            this.fn = Util.noop;
+        }.bind(this);
+        this.timeoutId = setTimeout(this.fn, transitionDuration);
     };
 
 

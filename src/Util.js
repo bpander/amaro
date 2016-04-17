@@ -52,5 +52,8 @@ define(function (require) {
     };
 
 
+    Util.noop = Function.prototype;
+
+
     return Util;
 });

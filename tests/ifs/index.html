@@ -2,15 +2,27 @@
 <html>
 <head>
     <title>Ifs test</title>
+    <style>
+        li {
+            transition: opacity 700ms, visibility 200ms;
+        }
+        li.-enter {
+            opacity: 0.01;
+        }
+        li.-enter-active {
+            background: rgba(255, 0, 0, 0.4);
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
 
-    <ul id="js-app"><li data-if="state.one">
+    <ul id="js-app"><li data-animate data-if="state.one">
             one
             <ul>
-                <li data-if="state.three">one/three</li>
+                <li data-animate data-if="state.three">one/three</li>
             </ul>
-        </li><li data-if="state.two">two</li><li data-if="state.three">three</li><li data-if="state.four">four</li><li data-if="state.five">five</li></ul>
+        </li><li data-animate data-if="state.two">two</li><li data-animate data-if="state.three">three</li><li data-animate data-if="state.four">four</li><li data-animate data-if="state.five">five</li></ul>
 
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>

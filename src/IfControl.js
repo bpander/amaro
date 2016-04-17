@@ -42,13 +42,27 @@ define(function (require) {
         }
         var i = -1;
         var sibling;
+        var ref = null;
         while ((sibling = this.nextSiblings[++i]) !== undefined) {
             if (sibling.parentNode === this.parentNode) {
-                this.parentNode.insertBefore(this.element, sibling);
-                return;
+                ref = sibling;
+                break;
             }
         }
-        this.parentNode.appendChild(this.element);
+        if (!this.element.hasAttribute('data-animate')) {
+            this.parentNode.insertBefore(this.element, ref);
+            return;
+        }
+        // TODO: This needs some cleaning up
+        var classList = this.element.classList;
+        classList.remove('-enter-active');
+        classList.add('-enter');
+        this.parentNode.insertBefore(this.element, ref);
+        var transitionDuration = Math.max.apply(null, getComputedStyle(this.element).transitionDuration.split(/,\s?/).map(parseFloat)) * 1000;
+        classList.add('-enter-active');
+        setTimeout(function () {
+            classList.remove('-enter', '-enter-active');
+        }.bind(this), transitionDuration);
     };
 
 

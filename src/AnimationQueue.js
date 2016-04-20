@@ -10,8 +10,24 @@ define(function (require) {
 
         this.timeoutId = -1;
 
+        this._enterClass;
+
+        this._enterActiveClass;
+
+        this._leaveClass;
+
+        this._leaveActiveClass;
+
     }
     var proto = AnimationQueue.prototype;
+
+
+    proto.setPrefix = function (prefix) {
+        this._enterClass         = prefix + '-enter';
+        this._enterActiveClass   = prefix + '-enter-active';
+        this._leaveClass         = prefix + '-leave';
+        this._leaveActiveClass   = prefix + '-leave-active';
+    };
 
 
     proto.jumpToEnd = function () {

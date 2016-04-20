@@ -49,14 +49,11 @@ define(function (require) {
                 break;
             }
         }
-        var insertFn = function () {
-            this.parentNode.insertBefore(this.element, ref);
-        }.bind(this);
+        this.parentNode.insertBefore(this.element, ref);
         if (!this.element.hasAttribute('data-animate')) {
-            insertFn();
             return;
         }
-        this.animationQueue.jumpToEnd().add(this.element, insertFn);
+        this.animationQueue.jumpToEnd().add([ this.element ]).process();
     };
 
 
@@ -65,16 +62,12 @@ define(function (require) {
             return;
         }
         this.isAttached = false;
-        var removeFn = function () {
-            this.parentNode = this.element.parentNode;
-            this.nextSiblings = Util.getNextSiblings(this.element);
-            this.parentNode.removeChild(this.element);
-        }.bind(this);
+        this.nextSiblings = Util.getNextSiblings(this.element);
         if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
-            removeFn();
+            this.parentNode.removeChild(this.element);
             return;
         }
-        this.animationQueue.jumpToEnd().remove(this.element, removeFn);
+        this.animationQueue.jumpToEnd().remove([ this.element ]).process();
     };
 
 

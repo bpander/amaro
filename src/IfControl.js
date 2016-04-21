@@ -9,9 +9,9 @@ define(function (require) {
     function IfControl (element) {
         Control.call(this, element);
 
-        this.parentNode = element.parentNode;
+        this.parentNode = null;
 
-        this.nextSiblings = Util.getNextSiblings(element);
+        this.nextSiblings = Util.getNextSiblings(this.element);
 
         this.isAttached = true;
 
@@ -40,6 +40,7 @@ define(function (require) {
             return;
         }
         this.isAttached = true;
+        this.animationQueue.jumpToEnd();
         var i = -1;
         var sibling;
         var ref = null;
@@ -53,7 +54,7 @@ define(function (require) {
         if (!this.element.hasAttribute('data-animate')) {
             return;
         }
-        this.animationQueue.jumpToEnd().add([ this.element ]).process();
+        this.animationQueue.add([ this.element ]).process();
     };
 
 
@@ -62,12 +63,13 @@ define(function (require) {
             return;
         }
         this.isAttached = false;
-        this.nextSiblings = Util.getNextSiblings(this.element);
+        this.animationQueue.jumpToEnd();
+        this.parentNode = this.element.parentNode;
         if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
             this.parentNode.removeChild(this.element);
             return;
         }
-        this.animationQueue.jumpToEnd().remove([ this.element ]).process();
+        this.animationQueue.remove([ this.element ]).process();
     };
 
 

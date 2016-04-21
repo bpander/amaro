@@ -67,7 +67,7 @@ define(function (require) {
 
         // Detach leftover iterations from the old hash table
         Object.keys(this.iterations).forEach(function (key) {
-            Array.prototype.push.apply(elementsToRemove, this.iterations[key].element.children);
+            Array.prototype.push.apply(elementsToRemove, this.iterations[key].childNodes);
         }, this);
 
         // Kick off the animation

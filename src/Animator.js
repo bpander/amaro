@@ -51,7 +51,7 @@ define(function (require) {
         transitionTime = Math.max.apply(null, elements.map(Util.getTotalTransitionTime));
         if (transitionTime === 0) {
             this.animation.resolve();
-            return;
+            return this.animation.promise;
         }
         elements.forEach(function (element) {
             element.classList.add(activeClass);

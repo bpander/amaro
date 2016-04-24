@@ -62,6 +62,7 @@ define(function (require) {
         // Detach leftover iterations from the old hash table
         Object.keys(this.iterations).forEach(function (key) {
             var iteration = this.iterations[key];
+            iterations[key] = iteration;
             iteration.unmount();
             iteration.leave().then(function () {
                 delete iterations[key];

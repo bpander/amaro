@@ -1,22 +1,35 @@
+li.-appear,
 li.-enter,
 li.-leave {
     transition: opacity 1500ms, transform 1500ms ease-out;
 }
+
+li.-appear {
+    opacity: 0;
+    transform: scale(0);
+}
+li.-appear-active {
+    background: rgba(255, 255, 0, 0.4);
+    opacity: 1;
+    transform: scale(1);
+}
+
 li.-enter {
     opacity: 0.01;
     transform: translateY(20px);
 }
 li.-enter-active {
-    background: rgba(255, 0, 0, 0.4);
+    background: rgba(0, 255, 0, 0.4);
     opacity: 1;
     transform: translateY(0);
 }
+
 li.-leave {
     opacity: 1;
     transform: translateY(0);
 }
 li.-leave-active {
-    background: rgba(0, 255, 0, 0.4);
+    background: rgba(255, 0, 0, 0.4);
     opacity: 0.01;
     transform: translateY(-20px);
 }

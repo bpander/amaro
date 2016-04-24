@@ -1,14 +1,12 @@
 define(function (require) {
     'use strict';
 
-    var Util = require('./Util');
-
 
     function Control (element) {
 
         this.element = element;
 
-        this.expression = Util.noop;
+        this.expression = _defaultExpression;
 
         this.children = [];
 
@@ -18,10 +16,16 @@ define(function (require) {
 
         this.id = _id++;
 
+        this.isMounted = false;
+
     }
 
 
     var _id = 1;
+
+    var _defaultExpression = function (x) {
+        return x;
+    };
 
 
     Control.prototype.acceptState = function (state, loop, thisArg) {
@@ -30,6 +34,7 @@ define(function (require) {
         for (i = 0, l = this.children.length; i < l; i++) {
             this.children[i].acceptState(state, loop, thisArg);
         }
+        this.isMounted = true;
     };
 
 

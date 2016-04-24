@@ -14,8 +14,6 @@ define(function (require) {
 
         this.isAttached = true;
 
-        this.isMounted = false;
-
     }
     IfControl.prototype = Object.create(Control.prototype);
     IfControl.prototype.constructor = IfControl;

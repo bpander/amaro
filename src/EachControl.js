@@ -68,6 +68,7 @@ define(function (require) {
 
         // Store a reference to the new hash table
         this.iterations = iterations;
+        this.isMounted = true;
     };
 
 

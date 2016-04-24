@@ -61,7 +61,7 @@ define(function (require) {
         }
 
         rootComponent.controlDidParse();
-        rootComponent.setState(initialState);
+        rootComponent.acceptState(initialState);
 
         return rootComponent;
     };

@@ -35,6 +35,7 @@ define(function (require) {
     OutputControl.prototype.acceptState = function (state, loop, thisArg) {
         var props = this.expression.call(thisArg, state, loop);
         OutputControl.merge(this.element, props);
+        this.isMounted = true;
     };
 
 

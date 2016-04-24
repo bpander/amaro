@@ -10,7 +10,7 @@ define(function (require) {
 
         this.state = Util.deepCopy(this.constructor.defaults);
 
-        this.isMounted = false;
+        this.prevState = Util.deepCopy(this.state);
 
     }
     Component.prototype = Object.create(Control.prototype);
@@ -22,23 +22,26 @@ define(function (require) {
 
     Component.prototype.acceptState = function (state, loop, thisArg) {
         this.setState(this.expression.call(thisArg, state, loop), loop);
+        this.isMounted = true;
     };
 
 
     Component.prototype.setState = function (state, loop) {
         var i;
         var l;
-        Object.assign(this.state, state);
-        (this.isMounted) ? this.componentWillUpdate() : this.componentWillMount();
+        var prevState = this.prevState;
+        var nextState = Object.assign(this.state, state);
+        var shouldComponentUpdate = (this.isMounted) ? this.shouldComponentUpdate(nextState) : true;
+        this.prevState = Util.deepCopy(this.state);
+        if (shouldComponentUpdate === false) {
+            return;
+        }
+
+        (this.isMounted) ? this.componentWillUpdate(nextState) : this.componentWillMount();
         for (i = 0, l = this.children.length; i < l; i++) {
-            this.children[i].acceptState(this.state, loop, this);
+            this.children[i].acceptState(nextState, loop, this);
         }
-        if (this.isMounted) {
-            this.componentDidUpdate();
-        } else {
-            this.isMounted = true;
-            this.componentDidMount();
-        }
+        (this.isMounted) ? this.componentDidUpdate(prevState) : this.componentDidMount();
     };
 
 
@@ -50,15 +53,21 @@ define(function (require) {
     };
 
 
-    Component.prototype.componentWillUpdate = function () {
+    Component.prototype.shouldComponentUpdate = function (nextState) {
+        return true;
     };
 
 
-    Component.prototype.componentDidUpdate = function () {
+    Component.prototype.componentWillUpdate = function (nextState) {
+    };
+
+
+    Component.prototype.componentDidUpdate = function (prevState) {
     };
 
 
     Component.prototype.componentWillUnmount = function () {
+        // TODO: Implement
     };
 
 

@@ -66,11 +66,12 @@ define(function (require) {
 
 
     IfControl.prototype.leave = function () {
-        return new Promise(function (resolve) {
+        var promise = Control.prototype.leave.call(this);
+        promise.then(function () {
             this.parentNode = this.element.parentNode;
             this.parentNode.removeChild(this.element);
-            resolve();
         }.bind(this));
+        return promise;
     };
 
 

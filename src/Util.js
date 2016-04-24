@@ -65,5 +65,20 @@ define(function (require) {
     };
 
 
+    Util.getTotalTransitionTime = function (element) {
+        var totalTransitionTime = 0;
+        var computedStyle = getComputedStyle(element);
+        var transitionDurations = computedStyle.transitionDuration.split(', ');
+        var transitionDelays = computedStyle.transitionDelay.split(', ');
+        var i;
+        var l;
+        for (i = 0, l = transitionDurations.length; i < l; i++) {
+            totalTransitionTime = Math.max(totalTransitionTime, parseFloat(transitionDurations[i]) + parseFloat(transitionDelays[i]));
+        }
+        totalTransitionTime *= 1000; // Convert to ms
+        return totalTransitionTime;
+    };
+
+
     return Util;
 });

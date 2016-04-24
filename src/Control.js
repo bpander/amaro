@@ -1,6 +1,8 @@
 define(function (require) {
     'use strict';
 
+    var Util = require('./Util');
+
 
     function Control (element) {
 
@@ -17,6 +19,10 @@ define(function (require) {
         this.id = _id++;
 
         this.isMounted = false;
+
+        this.shouldAnimate = true; // TODO: Implement
+
+        this.rejectPreviousAnimation = Util.noop;
 
     }
 
@@ -106,12 +112,54 @@ define(function (require) {
 
 
     Control.prototype.enter = function () {
-
+        if (!this.shouldAnimate) {
+            return;
+        }
+        var always = function () {
+            this.element.classList.remove('-enter', '-enter-active');
+        }.bind(this);
+        var promise;
+        this.rejectPreviousAnimation();
+        promise = new Promise(function (resolve, reject) {
+            var transitionTime;
+            this.rejectPreviousAnimation = reject;
+            this.element.classList.add('-enter');
+            transitionTime = Util.getTotalTransitionTime(this.element);
+            if (transitionTime === 0) {
+                resolve();
+                return;
+            }
+            this.element.classList.add('-enter-active');
+            setTimeout(resolve, transitionTime);
+        }.bind(this));
+        promise.then(always, always);
+        return promise;
     };
 
 
     Control.prototype.leave = function () {
-        return Promise.resolve();
+        if (!this.shouldAnimate || !this.isMounted) {
+            return Promise.resolve();
+        }
+        var always = function () {
+            this.element.classList.remove('-leave', '-leave-active')
+        }.bind(this);
+        var promise;
+        this.rejectPreviousAnimation();
+        promise = new Promise(function (resolve, reject) {
+            var transitionTime;
+            this.rejectPreviousAnimation = reject;
+            this.element.classList.add('-leave');
+            transitionTime = Util.getTotalTransitionTime(this.element);
+            if (transitionTime === 0) {
+                resolve();
+                return;
+            }
+            this.element.classList.add('-leave-active');
+            setTimeout(resolve, transitionTime);
+        }.bind(this));
+        promise.then(always, always);
+        return promise;
     };
 
 

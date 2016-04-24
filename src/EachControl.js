@@ -17,10 +17,11 @@ define(function (require) {
 
     }
     EachControl.prototype = Object.create(Control.prototype);
-    EachControl.prototype.constructor = EachControl;
+    var proto = EachControl.prototype;
+    proto.constructor = EachControl;
 
 
-    EachControl.prototype.acceptState = function (state, loop, thisArg) {
+    proto.acceptState = function (state, loop, thisArg) {
         var obj = this.expression.call(thisArg, state, loop);
         var iterations = {};
         loop = {
@@ -75,13 +76,13 @@ define(function (require) {
     };
 
 
-    EachControl.prototype.copyChildrenFrom = function (source) {
+    proto.copyChildrenFrom = function (source) {
         this.template = source.template;
         Control.prototype.copyChildrenFrom.call(this, source);
     };
 
 
-    EachControl.prototype.controlDidParse = function () {
+    proto.controlDidParse = function () {
         Control.prototype.controlDidParse.call(this);
         var childElements = Array.prototype.slice.call(this.element.children);
         var i;
@@ -92,7 +93,7 @@ define(function (require) {
     };
 
 
-    EachControl.prototype.createIteration = function () {
+    proto.createIteration = function () {
         var element = this.template.cloneNode(true);
         var iteration = new IterationControl(element);
         iteration.parent = this;

@@ -23,6 +23,7 @@ define(function (require) {
         this.animator = new Animator();
 
     }
+    var proto = Control.prototype;
 
 
     var _id = 1;
@@ -32,7 +33,7 @@ define(function (require) {
     };
 
 
-    Control.prototype.acceptState = function (state, loop, thisArg) {
+    proto.acceptState = function (state, loop, thisArg) {
         var i;
         var l;
         for (i = 0, l = this.children.length; i < l; i++) {
@@ -42,14 +43,14 @@ define(function (require) {
     };
 
 
-    Control.prototype.addChild = function (control) {
+    proto.addChild = function (control) {
         control.parent = this;
         this.children.push(control);
         control.element.setAttribute('data-control-' + this.id + '-' + control.id, '');
     };
 
 
-    Control.prototype.cloneOn = function (element) {
+    proto.cloneOn = function (element) {
         var Constructor = this.constructor;
         var instance = new Constructor(element);
         instance.expression = this.expression;
@@ -62,7 +63,7 @@ define(function (require) {
     };
 
 
-    Control.prototype.addToTree = function (control) {
+    proto.addToTree = function (control) {
         var children = this.children;
         var child;
         var i;
@@ -78,7 +79,7 @@ define(function (require) {
     };
 
 
-    Control.prototype.controlDidParse = function () {
+    proto.controlDidParse = function () {
         var i;
         var l;
         for (i = 0, l = this.children.length; i < l; i++) {
@@ -87,7 +88,7 @@ define(function (require) {
     };
 
 
-    Control.prototype.copyChildrenFrom = function (source) {
+    proto.copyChildrenFrom = function (source) {
         this.children = source.children.map(function (child) {
             var element;
             var attribute = 'data-control-' + source.original.id + '-' + child.original.id;
@@ -109,13 +110,13 @@ define(function (require) {
     };
 
 
-    Control.prototype.enter = function () {
+    proto.enter = function () {
         var type = (this.isMounted) ? Animator.TYPE.ENTER : Animator.TYPE.APPEAR;
         return this.animator.animate([ this.element ], type);
     };
 
 
-    Control.prototype.leave = function () {
+    proto.leave = function () {
         if (!this.isMounted) {
             return Promise.resolve();
         }
@@ -123,7 +124,7 @@ define(function (require) {
     };
 
 
-    Control.prototype.unmount = function () {
+    proto.unmount = function () {
 
     };
 

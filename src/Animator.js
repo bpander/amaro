@@ -7,9 +7,9 @@ define(function (require) {
 
     function Animator () {
 
-        this.enabled = true;
+        this.enabled = true; // TODO: This should be false by default and .enable should be called on parse
 
-        this.prefix = '';
+        this.prefix = ''; // TODO: Implement
 
         this.animation = new Deferred();
 

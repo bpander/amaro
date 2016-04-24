@@ -16,10 +16,11 @@ define(function (require) {
 
     }
     IfControl.prototype = Object.create(Control.prototype);
-    IfControl.prototype.constructor = IfControl;
+    var proto = IfControl.prototype;
+    proto.constructor = IfControl;
 
 
-    IfControl.prototype.acceptState = function (state, loop, thisArg) {
+    proto.acceptState = function (state, loop, thisArg) {
         if (this.expression.call(thisArg, state, loop)) {
             this.attach();
             Control.prototype.acceptState.call(this, state, loop);
@@ -30,7 +31,7 @@ define(function (require) {
     };
 
 
-    IfControl.prototype.attach = function () {
+    proto.attach = function () {
         if (this.isAttached) {
             return;
         }
@@ -42,7 +43,7 @@ define(function (require) {
     };
 
 
-    IfControl.prototype.getReferenceNode = function () {
+    proto.getReferenceNode = function () {
         var i = -1;
         var sibling;
         var ref = null;
@@ -56,7 +57,7 @@ define(function (require) {
     }
 
 
-    IfControl.prototype.detach = function () {
+    proto.detach = function () {
         if (!this.isAttached) {
             return;
         }
@@ -65,7 +66,7 @@ define(function (require) {
     };
 
 
-    IfControl.prototype.leave = function () {
+    proto.leave = function () {
         var promise = Control.prototype.leave.call(this);
         promise.then(function () {
             this.parentNode = this.element.parentNode;

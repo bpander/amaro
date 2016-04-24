@@ -14,16 +14,17 @@ define(function (require) {
 
     }
     IterationControl.prototype = Object.create(Control.prototype);
-    IterationControl.prototype.constructor = IterationControl;
+    var proto = IterationControl.prototype;
+    proto.constructor = IterationControl;
 
 
-    IterationControl.prototype.enter = function () {
+    proto.enter = function () {
         var type = (this.isMounted) ? Animator.TYPE.ENTER : Animator.TYPE.APPEAR;
         return this.animator.animate(this.childNodes, type);
     }
 
 
-    IterationControl.prototype.leave = function () {
+    proto.leave = function () {
         if (!this.isMounted) {
             return Promise.resolve();
         }

@@ -14,19 +14,20 @@ define(function (require) {
 
     }
     Component.prototype = Object.create(Control.prototype);
-    Component.prototype.constructor = Component;
+    var proto = Component.prototype;
+    proto.constructor = Component;
 
 
     Component.defaults = {};
 
 
-    Component.prototype.acceptState = function (state, loop, thisArg) {
+    proto.acceptState = function (state, loop, thisArg) {
         this.setState(this.expression.call(thisArg, state, loop), loop);
         this.isMounted = true;
     };
 
 
-    Component.prototype.setState = function (state, loop) {
+    proto.setState = function (state, loop) {
         var i;
         var l;
         var prevState = this.prevState;
@@ -45,28 +46,28 @@ define(function (require) {
     };
 
 
-    Component.prototype.componentWillMount = function () {
+    proto.componentWillMount = function () {
     };
 
 
-    Component.prototype.componentDidMount = function () {
+    proto.componentDidMount = function () {
     };
 
 
-    Component.prototype.shouldComponentUpdate = function (nextState) {
+    proto.shouldComponentUpdate = function (nextState) {
         return true;
     };
 
 
-    Component.prototype.componentWillUpdate = function (nextState) {
+    proto.componentWillUpdate = function (nextState) {
     };
 
 
-    Component.prototype.componentDidUpdate = function (prevState) {
+    proto.componentDidUpdate = function (prevState) {
     };
 
 
-    Component.prototype.componentWillUnmount = function () {
+    proto.componentWillUnmount = function () {
         // TODO: Implement
     };
 

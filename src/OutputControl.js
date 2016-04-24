@@ -9,7 +9,8 @@ define(function (require) {
 
     }
     OutputControl.prototype = Object.create(Control.prototype);
-    OutputControl.prototype.constructor = OutputControl;
+    var proto = OutputControl.prototype;
+    proto.constructor = OutputControl;
 
 
     OutputControl.merge = function (target, props) {
@@ -32,7 +33,7 @@ define(function (require) {
     };
 
 
-    OutputControl.prototype.acceptState = function (state, loop, thisArg) {
+    proto.acceptState = function (state, loop, thisArg) {
         var props = this.expression.call(thisArg, state, loop);
         OutputControl.merge(this.element, props);
         this.isMounted = true;

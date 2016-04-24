@@ -1,10 +1,7 @@
 define(function (require) {
     'use strict';
 
-    // TODO: Rewrite this using ES2015 syntax + Babel transpiler
     // TODO: Make a router demo
-    // TODO: Figure out if there's a way to "precompile" the markup
-    // TODO: Use `var proto` because performance
 
     var Component = require('./Component');
     var IfControl = require('./IfControl');

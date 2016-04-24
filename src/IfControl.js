@@ -1,7 +1,6 @@
 define(function (require) {
     'use strict';
 
-    var AnimationQueue = require('./AnimationQueue');
     var Control = require('./Control');
     var Util = require('./Util');
 
@@ -16,8 +15,6 @@ define(function (require) {
         this.isAttached = true;
 
         this.isMounted = false;
-
-        this.animationQueue = new AnimationQueue();
 
     }
     IfControl.prototype = Object.create(Control.prototype);
@@ -40,7 +37,6 @@ define(function (require) {
             return;
         }
         this.isAttached = true;
-        this.animationQueue.jumpToEnd();
         var i = -1;
         var sibling;
         var ref = null;
@@ -51,10 +47,6 @@ define(function (require) {
             }
         }
         this.parentNode.insertBefore(this.element, ref);
-        if (!this.element.hasAttribute('data-animate')) {
-            return;
-        }
-        this.animationQueue.add([ this.element ]).process();
     };
 
 
@@ -63,13 +55,8 @@ define(function (require) {
             return;
         }
         this.isAttached = false;
-        this.animationQueue.jumpToEnd();
         this.parentNode = this.element.parentNode;
-        if (!this.element.hasAttribute('data-animate') || !this.isMounted) {
-            this.parentNode.removeChild(this.element);
-            return;
-        }
-        this.animationQueue.remove([ this.element ]).process();
+        this.parentNode.removeChild(this.element);
     };
 
 

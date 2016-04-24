@@ -1,7 +1,6 @@
 define(function (require) {
     'use strict';
 
-    var AnimationQueue = require('./AnimationQueue');
     var Control = require('./Control');
     var IterationControl = require('./IterationControl');
     var Util = require('./Util');
@@ -16,8 +15,6 @@ define(function (require) {
 
         this.iterations = {};
 
-        this.animationQueue = new AnimationQueue();
-
     }
     EachControl.prototype = Object.create(Control.prototype);
     EachControl.prototype.constructor = EachControl;
@@ -31,10 +28,7 @@ define(function (require) {
             val: null,
             outer: loop
         };
-        var elementsToAdd = [];
-        var elementsToRemove = [];
 
-        this.animationQueue.jumpToEnd();
         Object.keys(obj).forEach(function (key, i) {
 
             // Manage loop vars
@@ -46,7 +40,6 @@ define(function (require) {
             var iteration = this.iterations[iterationKey];
             if (iteration === undefined) {
                 iteration = this.createIteration();
-                Array.prototype.push.apply(elementsToAdd, iteration.element.children);
             }
 
             // Move the iteration from the old hash table to the new one
@@ -67,12 +60,11 @@ define(function (require) {
 
         // Detach leftover iterations from the old hash table
         Object.keys(this.iterations).forEach(function (key) {
-            Array.prototype.push.apply(elementsToRemove, this.iterations[key].childNodes);
+            var iteration = this.iterations[key];
+            iteration.childNodes.forEach(function (node) {
+                this.element.removeChild(node);
+            }, this);
         }, this);
-
-        // Kick off the animation
-        // TODO: Implement 'data-animate-each' conditional
-        this.animationQueue.add(elementsToAdd).remove(elementsToRemove).process();
 
         // Store a reference to the new hash table
         this.iterations = iterations;

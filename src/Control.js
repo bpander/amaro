@@ -1,7 +1,7 @@
 define(function (require) {
     'use strict';
 
-    var Util = require('./Util');
+    var Animator = require('./Animator');
 
 
     function Control (element) {
@@ -20,9 +20,7 @@ define(function (require) {
 
         this.isMounted = false;
 
-        this.shouldAnimate = true; // TODO: Implement
-
-        this.rejectPreviousAnimation = Util.noop;
+        this.animator = new Animator();
 
     }
 
@@ -112,54 +110,16 @@ define(function (require) {
 
 
     Control.prototype.enter = function () {
-        if (!this.shouldAnimate) {
-            return;
-        }
-        var always = function () {
-            this.element.classList.remove('-enter', '-enter-active');
-        }.bind(this);
-        var promise;
-        this.rejectPreviousAnimation();
-        promise = new Promise(function (resolve, reject) {
-            var transitionTime;
-            this.rejectPreviousAnimation = reject;
-            this.element.classList.add('-enter');
-            transitionTime = Util.getTotalTransitionTime(this.element);
-            if (transitionTime === 0) {
-                resolve();
-                return;
-            }
-            this.element.classList.add('-enter-active');
-            setTimeout(resolve, transitionTime);
-        }.bind(this));
-        promise.then(always, always);
-        return promise;
+        var type = (this.isMounted) ? Animator.TYPE.ENTER : Animator.TYPE.APPEAR;
+        return this.animator.animate([ this.element ], type);
     };
 
 
     Control.prototype.leave = function () {
-        if (!this.shouldAnimate || !this.isMounted) {
+        if (!this.isMounted) {
             return Promise.resolve();
         }
-        var always = function () {
-            this.element.classList.remove('-leave', '-leave-active')
-        }.bind(this);
-        var promise;
-        this.rejectPreviousAnimation();
-        promise = new Promise(function (resolve, reject) {
-            var transitionTime;
-            this.rejectPreviousAnimation = reject;
-            this.element.classList.add('-leave');
-            transitionTime = Util.getTotalTransitionTime(this.element);
-            if (transitionTime === 0) {
-                resolve();
-                return;
-            }
-            this.element.classList.add('-leave-active');
-            setTimeout(resolve, transitionTime);
-        }.bind(this));
-        promise.then(always, always);
-        return promise;
+        return this.animator.animate([ this.element ], Animator.TYPE.LEAVE);
     };
 
 

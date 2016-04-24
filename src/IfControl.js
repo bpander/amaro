@@ -35,6 +35,14 @@ define(function (require) {
             return;
         }
         this.isAttached = true;
+        if (!document.body.contains(this.element)) {
+            this.parentNode.insertBefore(this.element, this.getReferenceNode());
+        }
+        this.enter();
+    };
+
+
+    IfControl.prototype.getReferenceNode = function () {
         var i = -1;
         var sibling;
         var ref = null;
@@ -44,8 +52,8 @@ define(function (require) {
                 break;
             }
         }
-        this.parentNode.insertBefore(this.element, ref);
-    };
+        return ref;
+    }
 
 
     IfControl.prototype.detach = function () {
@@ -53,8 +61,16 @@ define(function (require) {
             return;
         }
         this.isAttached = false;
-        this.parentNode = this.element.parentNode;
-        this.parentNode.removeChild(this.element);
+        this.leave();
+    };
+
+
+    IfControl.prototype.leave = function () {
+        return new Promise(function (resolve) {
+            this.parentNode = this.element.parentNode;
+            this.parentNode.removeChild(this.element);
+            resolve();
+        }.bind(this));
     };
 
 

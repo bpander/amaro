@@ -105,5 +105,20 @@ define(function (require) {
     };
 
 
+    Control.prototype.enter = function () {
+
+    };
+
+
+    Control.prototype.leave = function () {
+        return Promise.resolve();
+    };
+
+
+    Control.prototype.unmount = function () {
+
+    };
+
+
     return Control;
 });

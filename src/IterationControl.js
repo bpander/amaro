@@ -16,5 +16,15 @@ define(function (require) {
     IterationControl.prototype.constructor = IterationControl;
 
 
+    IterationControl.prototype.leave = function () {
+        return new Promise(function (resolve) {
+            this.childNodes.forEach(function (node) {
+                node.parentNode.removeChild(node);
+            });
+            resolve();
+        }.bind(this));
+    };
+
+
     return IterationControl;
 });

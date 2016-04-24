@@ -52,6 +52,7 @@ define(function (require) {
                 iteration.childNodes.forEach(function (node) {
                     this.element.appendChild(node);
                 }, this);
+                iteration.enter();
             }
 
             // Trickle the state down
@@ -61,9 +62,10 @@ define(function (require) {
         // Detach leftover iterations from the old hash table
         Object.keys(this.iterations).forEach(function (key) {
             var iteration = this.iterations[key];
-            iteration.childNodes.forEach(function (node) {
-                this.element.removeChild(node);
-            }, this);
+            iteration.unmount();
+            iteration.leave().then(function () {
+                delete iterations[key];
+            });
         }, this);
 
         // Store a reference to the new hash table

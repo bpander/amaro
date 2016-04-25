@@ -10,7 +10,7 @@
 
         <input data-out="{ onkeydown: state.onkeydown.bind(this) }" />
 
-        <ul data-each="state.todos" data-key="loop.val.id">
+        <ul data-each="state.todos" data-key="loop.val.id" data-animate-each>
             <li data-component="TodoComponent" data-state="{
                 todo: loop.val,
                 onRemoveClick: state.removeTodo.bind(this, loop.val),

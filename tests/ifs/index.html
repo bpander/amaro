@@ -6,7 +6,7 @@
 </head>
 <body>
 
-    <ul id="js-app"><li data-animate data-if="state.one">
+    <ul id="js-app"><li data-animate="foo" data-if="state.one">
             one
             <ul>
                 <li data-animate data-if="state.three">one/three</li>
@@ -25,7 +25,7 @@
 
             var element = document.getElementById('js-app');
             window.app = Relapse.mount(element, Component, {
-                one: false,
+                one: true,
                 two: false,
                 three: true,
                 four: false,

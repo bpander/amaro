@@ -21,10 +21,16 @@ define(function (require) {
         var componentExpr = element.getAttribute('data-component');
         var eachExpr = element.getAttribute('data-each');
         var control;
+        var animatorPrefix;
 
         if (ifExpr !== null) {
             control = new IfControl(element);
             control.expression = Relapse.compileExpression(ifExpr);
+            animatorPrefix = element.getAttribute('data-animate');
+            if (animatorPrefix !== null) {
+                control.animator.prefix = animatorPrefix;
+                control.animator.enable();
+            }
             rootComponent.addToTree(control);
         }
         if (outExpr !== null) {
@@ -43,6 +49,11 @@ define(function (require) {
             control = new EachControl(element);
             control.expression = Relapse.compileExpression(eachExpr);
             control.keyExpression = Relapse.compileExpression(element.getAttribute('data-key') || Relapse.defaultKeyExpression);
+            animatorPrefix = element.getAttribute('data-animate-each');
+            if (animatorPrefix !== null) {
+                control.animator.prefix = animatorPrefix;
+                control.animator.enable();
+            }
             rootComponent.addToTree(control);
         }
     };

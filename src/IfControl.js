@@ -32,7 +32,7 @@ define(function (require) {
 
 
     proto.attach = function () {
-        if (this.isAttached) {
+        if (this.isAttached && this.isMounted) {
             return;
         }
         this.isAttached = true;

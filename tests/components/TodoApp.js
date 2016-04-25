@@ -25,6 +25,9 @@ define(function (require) {
         },
         removeTodo: function (todo) {
             var index = this.state.todos.indexOf(todo);
+            if (index === -1) {
+                return;
+            }
             this.state.todos.splice(index, 1);
             this.setState();
         },

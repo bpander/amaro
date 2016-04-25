@@ -4,6 +4,15 @@ li.-leave {
     transition: opacity 1500ms, transform 1500ms ease-out;
 }
 
+li.foo-enter {
+    transition: transform 750ms ease-out;
+    transform: rotate(360deg);
+}
+
+li.foo-enter-active {
+    transform: rotate(0deg);
+}
+
 li.-appear {
     opacity: 0;
     transform: scale(0);

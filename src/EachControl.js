@@ -105,6 +105,8 @@ define(function (require) {
         var element = this.template.cloneNode(true);
         var iteration = new IterationControl(element);
         iteration.parent = this;
+        iteration.animator.enabled = this.animator.enabled;
+        iteration.animator.prefix = this.animator.prefix;
         iteration.copyChildrenFrom(this);
         return iteration;
     };

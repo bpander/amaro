@@ -12,7 +12,15 @@ define(function (require) {
     var Relapse = {};
 
 
-    Relapse.componentMap = {};
+    Relapse.Component = Component;
+
+
+    Relapse._componentMap = {};
+
+
+    Relapse.components = function (componentMap) {
+        Object.assign(Relapse._componentMap, componentMap);
+    };
 
 
     Relapse.processElement = function (element, rootComponent) {
@@ -40,7 +48,7 @@ define(function (require) {
         }
         if (componentExpr !== null) {
             // TODO: Think of a better way to do get the ComponentConstructor
-            var ComponentConstructor = Relapse.componentMap[componentExpr];
+            var ComponentConstructor = Relapse._componentMap[componentExpr];
             control = new ComponentConstructor(element);
             control.expression = Relapse.compileExpression(element.getAttribute('data-state'));
             rootComponent.addToTree(control);

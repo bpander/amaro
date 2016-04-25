@@ -1,7 +1,7 @@
 define(function (require) {
     'use strict';
 
-    var Component = require('../../src/Component');
+    var Component = require('../../src/Relapse').Component;
 
 
     function TodoApp (element, expression) {

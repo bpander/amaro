@@ -51,20 +51,20 @@
     <script>
         require([
             '../../src/Relapse',
-            '../../src/Component',
             './TodoApp',
             './TodoComponent'
         ], function (
             Relapse,
-            Component,
             TodoApp,
             TodoComponent
         ) {
 
             var element = document.getElementById('js-app');
 
-            Relapse.componentMap['TodoApp'] = TodoApp;
-            Relapse.componentMap['TodoComponent'] = TodoComponent;
+            Relapse.components({
+                TodoApp: TodoApp,
+                TodoComponent: TodoComponent
+            });
 
             window.app = Relapse.mount(element, TodoApp, {
                 todos: [

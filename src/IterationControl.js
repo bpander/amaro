@@ -19,7 +19,7 @@ define(function (require) {
 
 
     proto.enter = function () {
-        var type = (this.isMounted) ? Animator.TYPE.ENTER : Animator.TYPE.APPEAR;
+        var type = (this.parent.isMounted) ? Animator.TYPE.ENTER : Animator.TYPE.APPEAR;
         return this.animator.animate(this.childNodes, type);
     }
 

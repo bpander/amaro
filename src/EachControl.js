@@ -39,8 +39,10 @@ define(function (require) {
             // Grab the cached iteration or create a new one if necessary
             var iterationKey = this.keyExpression.call(thisArg, state, loop);
             var iteration = this.iterations[iterationKey];
+            var shouldIterationEnter = false;
             if (iteration === undefined) {
                 iteration = this.createIteration();
+                shouldIterationEnter = true;
             }
 
             // Move the iteration from the old hash table to the new one
@@ -53,7 +55,9 @@ define(function (require) {
                 iteration.childNodes.forEach(function (node) {
                     this.element.appendChild(node);
                 }, this);
+                if (shouldIterationEnter) {
                 iteration.enter();
+            }
             }
 
             // Trickle the state down

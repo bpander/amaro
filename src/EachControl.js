@@ -50,14 +50,14 @@ define(function (require) {
             iterations[iterationKey] = iteration;
 
             // If the iteration has a different index than what it used to, append it now
-            if (iteration.index !== i) {
+            if (iteration.index !== i && !iteration.willDestroy) {
                 iteration.index = i;
                 iteration.childNodes.forEach(function (node) {
                     this.element.appendChild(node);
                 }, this);
                 if (shouldIterationEnter) {
-                iteration.enter();
-            }
+                    iteration.enter();
+                }
             }
 
             // Trickle the state down
@@ -67,8 +67,12 @@ define(function (require) {
         // Detach leftover iterations from the old hash table
         Object.keys(this.iterations).forEach(function (key) {
             var iteration = this.iterations[key];
+            if (iteration.willDestroy) {
+                return;
+            }
             iterations[key] = iteration;
             iteration.unmount();
+            iteration.willDestroy = true;
             iteration.leave().then(function () {
                 delete iterations[key];
             });

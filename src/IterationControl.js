@@ -12,6 +12,8 @@ define(function (require) {
 
         this.index = -1;
 
+        this.willDestroy = false;
+
     }
     IterationControl.prototype = Object.create(Control.prototype);
     var proto = IterationControl.prototype;

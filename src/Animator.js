@@ -47,6 +47,7 @@ define(function (require) {
 
         elements.forEach(function (element) {
             element.classList.add(initialClass);
+            Util.forceRedraw(element);
         });
         transitionTime = Math.max.apply(null, elements.map(Util.getTotalTransitionTime));
         if (transitionTime === 0) {

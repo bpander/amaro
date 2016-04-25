@@ -80,5 +80,13 @@ define(function (require) {
     };
 
 
+    Util.forceRedraw = function (element) {
+        var display = element.style.display;
+        element.style.display = 'none';
+        element.offsetWidth;
+        element.style.display = display;
+    };
+
+
     return Util;
 });

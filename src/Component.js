@@ -46,6 +46,12 @@ define(function (require) {
     };
 
 
+    proto.unmount = function () {
+        Control.prototype.unmount.call(this);
+        this.componentWillUnmount();
+    };
+
+
     proto.componentWillMount = function () {
     };
 
@@ -68,7 +74,6 @@ define(function (require) {
 
 
     proto.componentWillUnmount = function () {
-        // TODO: Implement
     };
 
 

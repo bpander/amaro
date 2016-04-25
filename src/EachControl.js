@@ -71,8 +71,8 @@ define(function (require) {
                 return;
             }
             iterations[key] = iteration;
-            iteration.unmount();
             iteration.willDestroy = true;
+            iteration.unmount();
             iteration.leave().then(function () {
                 delete iterations[key];
             });

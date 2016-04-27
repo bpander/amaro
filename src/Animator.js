@@ -1,8 +1,5 @@
-define(function (require) {
+define(['Deferred', 'Util'], function (Deferred, Util) {
     'use strict';
-
-    var Deferred = require('./Deferred');
-    var Util = require('./Util');
 
 
     function Animator () {

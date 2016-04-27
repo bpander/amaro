@@ -1,7 +1,5 @@
-define(function (require) {
+define(['Animator'], function (Animator) {
     'use strict';
-
-    var Animator = require('./Animator');
 
 
     function Control (element) {

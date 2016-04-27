@@ -4,10 +4,9 @@ module.exports = function(grunt) {
     var amdclean = require('amdclean');
 
 
-    // Project configuration.
     grunt.initConfig({
 
-        // pkg: grunt.file.readJSON('package.json'),
+        pkg: grunt.file.readJSON('package.json'),
 
         requirejs: {
             dist: {
@@ -15,8 +14,8 @@ module.exports = function(grunt) {
                     findNestedDependencies: true,
                     baseUrl: 'src',
                     optimize: 'none',
-                    include: ['Relapse.js'],
-                    out: 'Relapse.js',
+                    include: ['Amaro.js'],
+                    out: 'Amaro.js',
                     wrap: {
                         start: '',
                         end: ''
@@ -26,10 +25,11 @@ module.exports = function(grunt) {
 
                         fs.writeFileSync(outputFile, amdclean.clean({
                             filePath: outputFile,
-                            // wrap: {
-                            //     start: fs.readFileSync('src/start.js.frag', { encoding: 'utf8' }),
-                            //     end: fs.readFileSync('src/end.js.frag', { encoding: 'utf8' })
-                            // }
+                            transformAMDChecks: false,
+                            wrap: {
+                                start: fs.readFileSync('src/start.frag.js', { encoding: 'utf8' }),
+                                end: fs.readFileSync('src/end.frag.js', { encoding: 'utf8' })
+                            }
                         }));
                     }
                 }
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'Relapse.min.js': ['Relapse.js']
+                    'Amaro.min.js': ['Amaro.js']
                 }
             }
         }

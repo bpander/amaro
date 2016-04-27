@@ -50,23 +50,23 @@
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
         require([
-            '../../src/Relapse',
+            '../../Amaro.min',
             './TodoApp',
             './TodoComponent'
         ], function (
-            Relapse,
+            Amaro,
             TodoApp,
             TodoComponent
         ) {
 
             var element = document.getElementById('js-app');
 
-            Relapse.components({
+            Amaro.components({
                 TodoApp: TodoApp,
                 TodoComponent: TodoComponent
             });
 
-            window.app = Relapse.mount(element, TodoApp, {
+            window.app = Amaro.mount(element, TodoApp, {
                 todos: [
                     { id: '1', text: 'Buy milk', complete: false },
                     { id: '2', text: 'Make bed', complete: true }

@@ -20,15 +20,13 @@
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
         require([
-            '../../src/Relapse',
-            '../../src/Component'
+            '../../Amaro'
         ], function (
-            Relapse,
-            Component
+            Amaro
         ) {
 
             var element = document.getElementById('js-app');
-            window.app = Relapse.mount(element, Component, {
+            window.app = Amaro.mount(element, Amaro.Component, {
                 todos: [
                     { id: '1', text: 'foo', actions: [{ id: '1' }] },
                     { id: '2', text: 'bar', actions: [{ id: '1' }] }

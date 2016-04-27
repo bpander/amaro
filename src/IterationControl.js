@@ -1,8 +1,5 @@
-define(function (require) {
+define(['Animator', 'Control'], function (Animator, Control) {
     'use strict';
-
-    var Animator = require('./Animator');
-    var Control = require('./Control');
 
 
     function IterationControl (element) {

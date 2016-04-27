@@ -1,17 +1,18 @@
 {
-  "name": "State.js",
-  "main": "State.js",
-  "homepage": "https://github.com/bpander/State.js",
+  "name": "Amaro",
+  "main": "Amaro.js",
+  "homepage": "https://github.com/bpander/amaro",
   "authors": [
     "Brad Anderson <brad.anderson87@gmail.com>"
   ],
-  "description": "",
+  "description": "Like virtual DOM but you write your HTML in the HTML.",
   "moduleType": [],
   "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
+    "src",
     "test",
     "tests"
   ],

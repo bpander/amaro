@@ -1,7 +1,5 @@
-define(function (require) {
+define(['Control'], function (Control) {
     'use strict';
-
-    var Control = require('./Control');
 
 
     function OutputControl (element) {

@@ -1,4 +1,6 @@
-# State.js
-Basically React sans virtual dom.
+# Amaro.js
 
-Documentation coming. In the meantime, check out this <a href="http://bpander.github.io/State.js/tests/components" target="_blank">demo</a>.
+Like virtual DOM but you write your HTML in the HTML.
+
+
+Documentation coming. In the meantime, check out this <a href="http://bpander.github.io/amaro/tests/components" target="_blank">demo</a>.

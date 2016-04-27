@@ -1,8 +1,5 @@
-define(function (require) {
+define(['Control', 'Util'], function (Control, Util) {
     'use strict';
-
-    var Control = require('./Control');
-    var Util = require('./Util');
 
 
     function IfControl (element) {

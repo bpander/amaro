@@ -1,7 +1,7 @@
 define(function (require) {
     'use strict';
 
-    var Component = require('../../src/Relapse').Component;
+    var Component = require('../../Amaro').Component;
 
 
     function TodoApp (element, expression) {

@@ -1,0 +1,28 @@
+{
+  "name": "amaro",
+  "version": "0.1.0",
+  "description": "Like virtual DOM but you write your HTML in the HTML.",
+  "main": "Amaro.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpander/amaro.git"
+  },
+  "author": "Brad Anderson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bpander/amaro/issues"
+  },
+  "homepage": "https://github.com/bpander/amaro",
+  "devDependencies": {
+    "amdclean": "2.7.0",
+    "grunt": "1.0.1",
+    "grunt-contrib-requirejs": "1.0.0",
+    "grunt-contrib-uglify": "1.0.1"
+  }
+}

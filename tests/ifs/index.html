@@ -16,15 +16,13 @@
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
         require([
-            '../../src/Relapse',
-            '../../src/Component'
+            '../../Amaro'
         ], function (
-            Relapse,
-            Component
+            Amaro
         ) {
 
             var element = document.getElementById('js-app');
-            window.app = Relapse.mount(element, Component, {
+            window.app = Amaro.mount(element, Amaro.Component, {
                 one: true,
                 two: false,
                 three: true,

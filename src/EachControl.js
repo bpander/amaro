@@ -1,9 +1,13 @@
-define(function (require) {
+define([
+    'Control',
+    'IterationControl',
+    'Util'
+], function (
+    Control,
+    IterationControl,
+    Util
+) {
     'use strict';
-
-    var Control = require('./Control');
-    var IterationControl = require('./IterationControl');
-    var Util = require('./Util');
 
 
     function EachControl (element) {

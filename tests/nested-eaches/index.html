@@ -20,10 +20,15 @@
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
         require([
-            '../../Amaro'
+            '../../Amaro',
+            '../../bower_components/es6-promise/es6-promise',
+            '../polyfills/Object.assign',
+            '../polyfills/classList'
         ], function (
-            Amaro
+            Amaro,
+            es6Promise
         ) {
+            es6Promise.polyfill();
 
             var element = document.getElementById('js-app');
             window.app = Amaro.mount(element, Amaro.Component, {

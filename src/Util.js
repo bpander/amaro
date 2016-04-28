@@ -8,6 +8,9 @@ define([], function () {
     Util.noop = Function.prototype;
 
 
+    var _envSupportsTransitions = document.createElement('div').style.transition !== undefined;
+
+
     /**
      * Create a deep copy of an object. Adapted from http://stackoverflow.com/a/728694/1159534.
      *
@@ -78,6 +81,15 @@ define([], function () {
         totalTransitionTime *= 1000; // Convert to ms
         return totalTransitionTime;
     };
+
+
+    // IE9 Hack. IE9 is the only supported browser that doesn't support transitions.
+    // TODO: Maybe make an IE9-specific build. Or just ignore IE9.
+    if (!_envSupportsTransitions) {
+        Util.getTotalTransitionTime = function () {
+            return 0;
+        };
+    }
 
 
     Util.forceRedraw = function (element) {

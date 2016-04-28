@@ -8,7 +8,7 @@
 
     <div id="js-app">
 
-        <input data-out="{ onkeydown: state.onkeydown.bind(this) }" />
+        <input type="text" data-out="{ onkeydown: state.onkeydown.bind(this) }" />
 
         <ul data-each="state.todos" data-key="loop.val.id" data-animate-each>
             <li data-component="TodoComponent" data-state="{
@@ -49,15 +49,23 @@
 
     <script src="../../bower_components/requirejs/require.js"></script>
     <script>
+        require.config({
+            urlArgs: 'bust=' + (new Date()).getTime()
+        });
         require([
-            '../../Amaro.min',
+            '../../Amaro',
             './TodoApp',
-            './TodoComponent'
+            './TodoComponent',
+            '../../bower_components/es6-promise/es6-promise',
+            '../polyfills/Object.assign',
+            '../polyfills/classList'
         ], function (
             Amaro,
             TodoApp,
-            TodoComponent
+            TodoComponent,
+            es6Promise
         ) {
+            es6Promise.polyfill();
 
             var element = document.getElementById('js-app');
 

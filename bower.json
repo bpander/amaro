@@ -17,6 +17,7 @@
     "tests"
   ],
   "devDependencies": {
-    "requirejs": "2.2.0"
+    "requirejs": "2.2.0",
+    "es6-promise": "3.2.1"
   }
 }

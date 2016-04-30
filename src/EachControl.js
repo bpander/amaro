@@ -96,11 +96,11 @@ define([
 
     proto.controlDidParse = function () {
         Control.prototype.controlDidParse.call(this);
-        var childElements = Array.prototype.slice.call(this.element.children);
+        var childNodes = Array.prototype.slice.call(this.element.childNodes);
         var i;
         var l;
-        for (i = 0, l = childElements.length; i < l; i++) {
-            this.template.appendChild(childElements[i]);
+        for (i = 0, l = childNodes.length; i < l; i++) {
+            this.template.appendChild(childNodes[i]);
         }
     };
 

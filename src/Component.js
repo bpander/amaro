@@ -5,7 +5,7 @@ define(['Control', 'Util'], function (Control, Util) {
     function Component (element) {
         Control.call(this, element);
 
-        this.state = Util.deepCopy(this.constructor.defaults);
+        this.state = Util.deepCopy(this.constructor.defaults || {});
 
         this.prevState = Util.deepCopy(this.state);
 

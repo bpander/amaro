@@ -34,6 +34,7 @@ define(['Control'], function (Control) {
     proto.acceptState = function (state, loop, thisArg) {
         var props = this.expression.call(thisArg, state, loop);
         OutputControl.merge(this.element, props);
+        Control.prototype.acceptState.call(this, state, loop, thisArg);
         this.isMounted = true;
     };
 

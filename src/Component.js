@@ -27,15 +27,17 @@ define(['Control', 'Util'], function (Control, Util) {
         var i;
         var l;
         var prevState = this.prevState;
-        var nextState = Object.assign(this.state, state);
+        var nextState = Object.assign({}, this.state, state);
         var shouldComponentUpdate = (this.isMounted) ? this.shouldComponentUpdate(nextState) : true;
         var isMounted = this.isMounted;
-        this.prevState = Util.deepCopy(this.state);
+        this.prevState = Util.deepCopy(nextState);
         if (shouldComponentUpdate === false) {
+            this.state = nextState;
             return;
         }
 
         (isMounted) ? this.componentWillUpdate(nextState) : this.componentWillMount();
+        this.state = nextState;
         for (i = 0, l = this.children.length; i < l; i++) {
             this.children[i].acceptState(nextState, loop, this);
         }

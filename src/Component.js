@@ -20,7 +20,6 @@ define(['Control', 'Util'], function (Control, Util) {
 
     proto.acceptState = function (state, loop, thisArg) {
         this.setState(this.expression.call(thisArg, state, loop), loop);
-        this.isMounted = true;
     };
 
 
@@ -30,16 +29,18 @@ define(['Control', 'Util'], function (Control, Util) {
         var prevState = this.prevState;
         var nextState = Object.assign(this.state, state);
         var shouldComponentUpdate = (this.isMounted) ? this.shouldComponentUpdate(nextState) : true;
+        var isMounted = this.isMounted;
         this.prevState = Util.deepCopy(this.state);
         if (shouldComponentUpdate === false) {
             return;
         }
 
-        (this.isMounted) ? this.componentWillUpdate(nextState) : this.componentWillMount();
+        (isMounted) ? this.componentWillUpdate(nextState) : this.componentWillMount();
         for (i = 0, l = this.children.length; i < l; i++) {
             this.children[i].acceptState(nextState, loop, this);
         }
-        (this.isMounted) ? this.componentDidUpdate(prevState) : this.componentDidMount();
+        this.isMounted = true;
+        (isMounted) ? this.componentDidUpdate(prevState) : this.componentDidMount();
     };
 
 

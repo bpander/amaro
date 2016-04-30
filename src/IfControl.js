@@ -20,7 +20,7 @@ define(['Control', 'Util'], function (Control, Util) {
     proto.acceptState = function (state, loop, thisArg) {
         if (this.expression.call(thisArg, state, loop)) {
             this.attach();
-            Control.prototype.acceptState.call(this, state, loop);
+            Control.prototype.acceptState.call(this, state, loop, thisArg);
         } else {
             this.detach();
         }

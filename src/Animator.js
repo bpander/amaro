@@ -28,7 +28,7 @@ define(['Deferred', 'Util'], function (Deferred, Util) {
 
     proto.animate = function (elements, type) {
         if (!this.enabled) {
-            return Promise.resolve();
+            return null;
         }
         var initialClass = this.prefix + type;
         var activeClass = initialClass + '-active';
@@ -48,8 +48,8 @@ define(['Deferred', 'Util'], function (Deferred, Util) {
         });
         transitionTime = Math.max.apply(null, elements.map(Util.getTotalTransitionTime));
         if (transitionTime === 0) {
-            this.animation.resolve();
-            return this.animation.promise;
+            always();
+            return null;
         }
         elements.forEach(function (element) {
             element.classList.add(activeClass);

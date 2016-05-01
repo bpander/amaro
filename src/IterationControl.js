@@ -5,7 +5,9 @@ define(['Animator', 'Control'], function (Animator, Control) {
     function IterationControl (element) {
         Control.call(this, element);
 
-        this.childNodes = Array.prototype.slice.call(element.childNodes, 0);
+        this.childNodes = Array.prototype.slice.call(element.childNodes);
+
+        this.childElements = Array.prototype.slice.call(element.children);
 
         this.index = -1;
 
@@ -19,20 +21,25 @@ define(['Animator', 'Control'], function (Animator, Control) {
 
     proto.enter = function () {
         var type = (this.parent.isMounted) ? Animator.TYPE.ENTER : Animator.TYPE.APPEAR;
-        return this.animator.animate(this.childNodes, type);
+        return this.animator.animate(this.childElements, type);
     }
 
 
     proto.leave = function () {
         if (!this.isMounted) {
-            return Promise.resolve();
+            return null;
         }
-        var promise = this.animator.animate(this.childNodes, Animator.TYPE.LEAVE);
-        promise.then(function () {
+        var promise = this.animator.animate(this.childElements, Animator.TYPE.LEAVE);
+        var onFulfilled = function () {
             this.childNodes.forEach(function (node) {
                 node.parentNode.removeChild(node);
             });
-        }.bind(this));
+        }.bind(this);
+        if (promise === null) {
+            onFulfilled();
+        } else {
+            promise.then(onFulfilled);
+        }
         return promise;
     };
 

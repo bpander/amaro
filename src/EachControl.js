@@ -74,12 +74,18 @@ define([
             if (iteration.willDestroy) {
                 return;
             }
+            var onFulFilled = function () {
+                delete iterations[key];
+            };
             iterations[key] = iteration;
             iteration.willDestroy = true;
             iteration.unmount();
-            iteration.leave().then(function () {
-                delete iterations[key];
-            });
+            var promise = iteration.leave();
+            if (promise === null) {
+                onFulFilled();
+            } else {
+                promise.then(onFulFilled);
+            }
         }, this);
 
         // Store a reference to the new hash table

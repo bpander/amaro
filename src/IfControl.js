@@ -65,10 +65,15 @@ define(['Control', 'Util'], function (Control, Util) {
 
     proto.leave = function () {
         var promise = Control.prototype.leave.call(this);
-        promise.then(function () {
+        var onFulfilled = function () {
             this.parentNode = this.element.parentNode;
             this.parentNode.removeChild(this.element);
-        }.bind(this));
+        }.bind(this);
+        if (promise === null) {
+            onFulfilled();
+        } else {
+            promise.then(onFulfilled);
+        }
         return promise;
     };
 

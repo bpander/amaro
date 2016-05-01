@@ -116,7 +116,7 @@ define(['Animator'], function (Animator) {
 
     proto.leave = function () {
         if (!this.isMounted) {
-            return Promise.resolve();
+            return null;
         }
         return this.animator.animate([ this.element ], Animator.TYPE.LEAVE);
     };
